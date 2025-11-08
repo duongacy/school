@@ -2,9 +2,15 @@ name: CI
 
 on:
   push:
-    branches: [ main ]
+    # Run CI on main, develop, and any release/* branches
+    branches: [ main, develop ]
+    branches-ignore: [ 'docs/**' ]
+    tags: ['v*', 'release-*']
   pull_request:
-    branches: [ main ]
+    # Run CI for PRs targeting the important branches
+    branches: [ main, develop, 'release/*' ]
+  # Allow manual runs from the Actions UI
+  workflow_dispatch:
 
 jobs:
   lint-and-typecheck:
