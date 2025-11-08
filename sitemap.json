@@ -1,0 +1,96 @@
+{
+  "site": "School Website",
+  "routes": [
+    {
+      "path": "/",
+      "title": "Trang Chủ",
+      "access": "public",
+      "component": "HomePage",
+      "description": "Tổng hợp tin tức và các hoạt động nổi bật"
+    },
+    {
+      "path": "/about",
+      "title": "Giới thiệu",
+      "access": "public",
+      "children": [
+        { "path": "/about/history", "title": "Lịch sử" },
+        { "path": "/about/mission", "title": "Sứ mệnh & Tầm nhìn" },
+        { "path": "/about/team", "title": "Đội ngũ" },
+        { "path": "/about/facilities", "title": "Cơ sở vật chất" }
+      ]
+    },
+    {
+      "path": "/admissions",
+      "title": "Tuyển sinh",
+      "access": "public",
+      "children": [
+        { "path": "/admissions/info", "title": "Thông tin" },
+        { "path": "/admissions/apply", "title": "Đăng ký trực tuyến", "notes": "Form đăng ký; có thể yêu cầu auth cho hồ sơ đã nộp" }
+      ]
+    },
+    {
+      "path": "/news",
+      "title": "Tin tức & Sự kiện",
+      "access": "public",
+      "children": [
+        { "path": "/news/[slug]", "title": "Chi tiết bài viết" },
+        { "path": "/news/category/[slug]", "title": "Danh mục" }
+      ]
+    },
+    {
+      "path": "/activities",
+      "title": "Hoạt động",
+      "access": "public",
+      "children": [{ "path": "/activities/[id]", "title": "Chi tiết hoạt động" }]
+    },
+    {
+      "path": "/library",
+      "title": "Thư viện",
+      "access": "public",
+      "children": [
+        { "path": "/library/documents", "title": "Tài liệu" },
+        { "path": "/library/media", "title": "Media" },
+        { "path": "/library/document/[id]", "title": "Chi tiết tài liệu" }
+      ]
+    },
+    {
+      "path": "/learning",
+      "title": "Góc Học tập",
+      "access": "public",
+      "children": [
+        { "path": "/learning/resources", "title": "Tài nguyên" },
+        { "path": "/learning/notes", "title": "Ghi chú" }
+      ]
+    },
+    { "path": "/contact", "title": "Liên hệ", "access": "public" },
+
+    { "path": "/auth/login", "title": "Đăng nhập", "access": "public" },
+    { "path": "/auth/register", "title": "Đăng ký", "access": "public" },
+    { "path": "/auth/forgot-password", "title": "Quên mật khẩu", "access": "public" },
+    { "path": "/auth/reset-password", "title": "Đặt lại mật khẩu", "access": "public" },
+    { "path": "/profile", "title": "Trang cá nhân", "access": "auth" },
+
+    {
+      "path": "/admin",
+      "title": "Admin",
+      "access": "admin",
+      "children": [
+        { "path": "/admin/news", "title": "Quản lý tin tức" },
+        { "path": "/admin/library", "title": "Quản lý thư viện" },
+        { "path": "/admin/admissions", "title": "Quản lý tuyển sinh" },
+        { "path": "/admin/users", "title": "Quản lý người dùng" }
+      ]
+    }
+  ],
+  "api": {
+    "auth": [
+      "/api/auth/register",
+      "/api/auth/login",
+      "/api/auth/logout",
+      "/api/auth/forgot-password",
+      "/api/auth/reset-password",
+      "/api/auth/me"
+    ],
+    "content": ["/api/news", "/api/library"]
+  }
+}

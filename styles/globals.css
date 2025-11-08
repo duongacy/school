@@ -1,0 +1,14 @@
+@import "tailwindcss/preflight";
+@tailwind utilities;
+
+/* NOTE: Tailwind's preflight was disabled in tailwind.config.js so Chakra UI can manage the global reset.
+   Use Tailwind utilities for layout and Chakra components for UI primitives to avoid style conflicts. */
+
+html, body, #__next {
+  height: 100%;
+}
+
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
