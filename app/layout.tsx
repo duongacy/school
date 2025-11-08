@@ -4,7 +4,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Providers from "../components/Providers";
 import Header from "../components/Header";
-import { cookies as nextCookies } from "next/headers";
+import Footer from "@/components/Footer";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -26,53 +26,42 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  // Read cookie on the server to determine initial color mode
-  const cookieStore = await nextCookies();
-  const cookie = cookieStore.get?.("chakra-ui-color-mode");
-  const initialColorMode = cookie?.value; // 'light' | 'dark' | undefined
-
-  // Only include the beforeInteractive fallback if there's no cookie
-  // Fallback can be disabled via NEXT_PUBLIC_DISABLE_FALLBACK=true
+  // We'll set theme (dark class) on the client before hydration using localStorage
+  // Fallback behavior can be disabled with NEXT_PUBLIC_DISABLE_FALLBACK=true
   const disableFallback = process.env.NEXT_PUBLIC_DISABLE_FALLBACK === "true";
   const setInitialColorMode = `(function() {
     try {
-      // If cookie is not set, fall back to prefers-color-scheme
-      const mql = window.matchMedia('(prefers-color-scheme: dark)');
-      const prefersDark = mql.matches;
-      const mode = prefersDark ? 'dark' : 'light';
-      document.documentElement.setAttribute('data-theme', mode);
-      document.documentElement.style.colorScheme = mode;
-    } catch (e) {
-      // ignore
-    }
+      var stored = null;
+      try { stored = localStorage.getItem('theme'); } catch(e){}
+      if (stored === 'dark') {
+        document.documentElement.classList.add('dark');
+      } else if (stored === 'light') {
+        document.documentElement.classList.remove('dark');
+      } else {
+        var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        if (prefersDark) document.documentElement.classList.add('dark');
+      }
+    } catch (e) {}
   })();`;
 
   return (
-    <html
-      suppressHydrationWarning
-      lang="en"
-      {...(initialColorMode
-        ? {
-            // If cookie exists, render server HTML with correct attributes
-            "data-theme": initialColorMode,
-            style: { colorScheme: initialColorMode },
-          }
-        : {})}
-    >
+    <html suppressHydrationWarning lang="en">
       <head>
         {/* If there's no server cookie, run a lightweight script before hydration unless disabled */}
-        {!initialColorMode && !disableFallback ? (
-          <Script id="chakra-init" strategy="beforeInteractive">
+        {!disableFallback ? (
+          <Script id="theme-init" strategy="beforeInteractive">
             {setInitialColorMode}
           </Script>
         ) : null}
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        suppressHydrationWarning
+        className={`${geistSans.variable} ${geistMono.variable} flex flex-col antialiased min-h-screen overflow-auto`}
       >
         <Providers>
           <Header />
-          <main>{children}</main>
+          <main className="grow flex flex-col">{children}</main>
+          <Footer />
         </Providers>
       </body>
     </html>
