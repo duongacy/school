@@ -9,31 +9,25 @@ export type Program = {
 
 export const programs: Program[] = [
   {
-    slug: 'cong-nghe-thong-tin',
-    title: 'Công nghệ thông tin',
-    short: 'Chương trình đào tạo chuyên sâu về lập trình, hệ thống và mạng.',
-    duration: '4 năm',
-    fees: '20,000,000 VND / kỳ',
-    overview:
-      'Chương trình CNTT cung cấp kiến thức nền tảng về lập trình, cấu trúc dữ liệu, cơ sở dữ liệu và phát triển web/mobile.'
+    slug: 'chuyen-de-cntt',
+    title: 'Chuyên đề Công nghệ thông tin',
+     short: 'Chuyên đề ngắn hạn giúp học sinh lớn làm quen với tư duy máy tính và kỹ năng số cơ bản.',
+     overview:
+       'Chuyên đề CNTT dành cho học sinh THCS/THPT trang bị kiến thức cơ bản về lập trình, kỹ năng sử dụng máy tính an toàn và tư duy số.'
   },
   {
-    slug: 'quan-tri-kinh-doanh',
-    title: 'Quản trị kinh doanh',
-    short: 'Đào tạo quản trị doanh nghiệp, marketing và tài chính cơ bản.',
-    duration: '4 năm',
-    fees: '20,000,000 VND / kỳ',
+    slug: 'ky-nang-song',
+    title: 'Chuyên đề Kỹ năng sống',
+    short: 'Các khóa kỹ năng sống: giao tiếp, làm việc nhóm và an toàn.',
     overview:
-      'Chương trình Quản trị kinh doanh trang bị kỹ năng quản lý, kinh tế, kế toán và marketing cho sinh viên.'
+      'Chuyên đề kỹ năng sống giúp học sinh phát triển kỹ năng mềm, tư duy phản biện và kỹ năng tự phục vụ.'
   },
   {
-    slug: 'khoa-hoc-du-lieu',
-    title: 'Khoa học dữ liệu',
-    short: 'Tập trung vào thống kê, máy học và phân tích dữ liệu lớn.',
-    duration: '4 năm',
-    fees: '25,000,000 VND / kỳ',
+    slug: 'khoa-hoc-tu-nhien',
+    title: 'Chuyên đề Khoa học tự nhiên',
+    short: 'Hoạt động khám phá khoa học, thực hành thí nghiệm đơn giản cho học sinh.',
     overview:
-      'Khoa học dữ liệu kết hợp toán học, lập trình và domain knowledge để trích xuất giá trị từ dữ liệu.'
+      'Chuyên đề giúp học sinh trải nghiệm thực hành khoa học, phát triển tư duy khám phá và kỹ năng thí nghiệm cơ bản.'
   }
 ];
 

@@ -2,12 +2,16 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { cn } from "@/lib/cn";
 
 const NAV_ITEMS: { href: string; label: string }[] = [
   { href: "/", label: "Trang chủ" },
   { href: "/about", label: "Giới thiệu" },
   { href: "/admissions", label: "Tuyển sinh" },
+  { href: "/academics", label: "Đào tạo" },
+  { href: "/news", label: "Tin tức & Sự kiện" },
   { href: "/library", label: "Thư viện" },
+  { href: "/contact", label: "Liên hệ" },
 ];
 
 export default function Header() {
@@ -50,15 +54,15 @@ export default function Header() {
           {NAV_ITEMS.map((item) => {
             const exact = normalizePath(item.href) === normalizedPath;
             const active = isActive(item.href, normalizedPath);
-            const className = `${
-              exact
-                ? "text-blue-600 font-semibold"
-                : active
-                ? "text-blue-600"
-                : "text-gray-700"
-            } px-3 py-1 rounded hover:bg-gray-100`;
             return (
-              <Link key={item.href} href={item.href} className={className}>
+              <Link
+                key={item.href}
+                href={item.href}
+                className={cn(
+                  "px-3 py-1 rounded hover:bg-gray-100",
+                  exact ? "text-blue-600 font-semibold" : active ? "text-blue-600" : "text-gray-700"
+                )}
+              >
                 {item.label}
               </Link>
             );

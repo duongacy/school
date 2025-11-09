@@ -1,0 +1,9 @@
+Placeholder PDF for application form.
+
+This is a placeholder file named application.pdf. Replace this file with the real application PDF form provided by your admissions office.
+
+File path: /public/forms/application.pdf
+
+Instructions:
+- Replace this file with a real PDF (binary) named 'application.pdf'.
+- The Admissions page links to this path so applicants can download the form.

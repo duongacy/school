@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Script from "next/script";
+import { cn } from "@/lib/cn";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Providers from "../components/Providers";
@@ -54,10 +55,7 @@ export default async function RootLayout({
           </Script>
         ) : null}
       </head>
-      <body
-        suppressHydrationWarning
-        className={`${geistSans.variable} ${geistMono.variable} flex flex-col antialiased min-h-screen overflow-auto`}
-      >
+      <body suppressHydrationWarning className={cn(geistSans.variable, geistMono.variable, "flex flex-col antialiased min-h-screen overflow-auto")}>
         <Providers>
           <Header />
           <main className="grow flex flex-col">{children}</main>
