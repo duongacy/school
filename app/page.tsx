@@ -18,7 +18,7 @@ export default function HomePage() {
       <div className="grid grid-cols-[2fr_1fr] gap-6 container mx-auto my-8">
         <div className="space-y-6">
           <div className="border p-4">
-            <h2 className="text-lg font-semibold">Tin tức & Sự kiện</h2>
+            <h2 className="text-3xl font-semibold ">Tin tức & Sự kiện</h2>
             <div className="mt-3 space-y-3">
               <EventItem
                 date="01 Tháng 11, 2025"
@@ -36,7 +36,7 @@ export default function HomePage() {
 
           {/* Featured / Highlights */}
           <section className="border p-4">
-            <h3 className="text-lg font-semibold">Học sinh nổi bật</h3>
+            <h3 className="text-3xl font-semibold ">Học sinh nổi bật</h3>
             <div className="mt-3 grid grid-cols-2 gap-3">
               <StudentItem
                 name="Nguyễn Văn A"
@@ -68,7 +68,7 @@ export default function HomePage() {
 
         <aside className="space-y-3">
           <div className="border p-3 bg-white">
-            <h4 className="text-lg font-semibold">Thông báo nhanh</h4>
+            <h4 className="text-3xl font-semibold ">Thông báo nhanh</h4>
             <ul className="mt-3 space-y-2 text-sm">
               <li className="p-2 bg-gray-50">Lịch thi giữa kỳ - cập nhật</li>
               <li className="p-2 bg-gray-50">Nghỉ lễ: 20/11</li>
@@ -82,7 +82,7 @@ export default function HomePage() {
           </div>
 
           <div className="border p-3 bg-white">
-            <h4 className="text-lg font-semibold">Văn bản mới</h4>
+            <h4 className="text-3xl font-semibold ">Văn bản mới</h4>
             <ul className="mt-3 space-y-2 text-sm">
               <li className="p-2 bg-gray-50">
                 Quy chế chi tiêu nội bộ của Trường Đại học Sư phạm TP.HCM (QĐ

@@ -14,7 +14,7 @@ export default function AboutPage() {
       </section>
       <section className="my-8 container mx-auto space-y-8">
         <div className="border p-4">
-          <h2 className="text-3xl font-semibold ">Tầm nhìn và sứ mệnh</h2>
+          <h2 className="text-3xl font-semibold">Tầm nhìn và sứ mệnh</h2>
           <div className="grid grid-cols-2 gap-8">
             <p className=" mt-4 bg-blue-100/50 p-4">
               Xây dựng nền giáo dục hiện đại, chất lượng cao, đạt trình độ tiên
