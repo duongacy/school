@@ -10,7 +10,9 @@ export default function HomePage() {
         <div className=" h-80 bg-gray-800"></div>
         <div className="flex gap-3 justify-center mt-8">
           <Button className="rounded-none">Thông báo</Button>
-          <Button variant="outline" className="rounded-none">Liên hệ</Button>
+          <Button variant="outline" className="rounded-none">
+            Liên hệ
+          </Button>
         </div>
       </section>
       <div className="grid grid-cols-[2fr_1fr] gap-6 container mx-auto my-8">
