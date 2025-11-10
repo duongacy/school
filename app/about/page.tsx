@@ -3,13 +3,15 @@ import Image from "next/image";
 export default function AboutPage() {
   return (
     <div className=" text-gray-700">
-      <section className="bg-gray-100 border p-6">
-        <div className="h-80 bg-gray-800"></div>
-        <div className="mt-2 flex justify-center gap-2">
-          <div className="size-3 bg-gray-600 rounded-full"></div>
-          <div className="size-3 bg-gray-400 rounded-full"></div>
-          <div className="size-3 bg-gray-400 rounded-full"></div>
-          <div className="size-3 bg-gray-400 rounded-full"></div>
+      <section className="bg-gray-100 border p-4">
+        <div className="container mx-auto">
+          <div className="h-80 bg-gray-800"></div>
+          <div className="mt-4 flex justify-center gap-2">
+            <div className="size-3 bg-gray-600 rounded-full"></div>
+            <div className="size-3 bg-gray-400 rounded-full"></div>
+            <div className="size-3 bg-gray-400 rounded-full"></div>
+            <div className="size-3 bg-gray-400 rounded-full"></div>
+          </div>
         </div>
       </section>
       <section className="my-8 container mx-auto space-y-8">
@@ -26,7 +28,7 @@ export default function AboutPage() {
               thống. Đảm bảo chất lượng, công bằng và hiệu quả giáo dục, bồi
               dưỡng nhân tài và phát triển nguồn nhân lực chất lượng cao phục vụ
               đất nước.
-            </p> 
+            </p>
           </div>
         </div>
 

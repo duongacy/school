@@ -1,39 +1,32 @@
 "use client";
-import Link from "next/link";
-
-const FOOTER_LINKS: { href: string; label: string }[] = [
-  { href: "/", label: "Trang chủ" },
-  { href: "/about", label: "Giới thiệu" },
-  { href: "/admissions", label: "Tuyển sinh" },
-  { href: "/library", label: "Thư viện" },
-];
 
 export default function Footer() {
   return (
-  <footer role="contentinfo" className="border-t bg-white/80">
-      <div className="max-w-6xl mx-auto py-8 px-4 md:px-6 grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div>
-          <div className="font-semibold">Trường THPT Phan Bội Châu</div>
-          <div className="text-sm text-gray-700 mt-2">
-            Địa chỉ: Số 123, Đường Ví Dụ, Phường Minh Họa, Thành phố
+    <footer className="border-t  py-6 bg-gray-100">
+      <div className="container mx-auto space-y-6">
+        <div className=" grid grid-cols-4 gap-4">
+          <div>
+            <div className="font-semibold">BỘ GIÁO DỤC VÀ ĐÀO TẠO</div>
+            <div className="text-sm text-gray-700 mt-2">
+              Số 35 Đại Cồ Việt, phường Bạch Mai, Hà Nội
+            </div>
+            <div className="text-sm text-gray-700">
+              Email: bogddt@moet.gov.vn
+            </div>
+            <div className="text-sm text-gray-700">Hotline: (024) 38695144</div>
           </div>
-          <div className="text-sm text-gray-700">Email: info@phanboichau.edu.vn</div>
-          <div className="text-sm text-gray-700">Hotline: (024) 0123 4567</div>
-        </div>
-
-        <div className="flex items-start justify-center">
-          <div className="flex flex-col items-start">
-            {FOOTER_LINKS.map((link) => (
-              <Link key={link.href} href={link.href} className="text-sm text-gray-700 hover:underline">
-                {link.label}
-              </Link>
-            ))}
+          <div className=" bg-neutral-200 grid place-content-center self-end min-h-16">
+            Block 1
+          </div>
+          <div className=" bg-neutral-200 grid place-content-center self-end min-h-16">
+            Block 2
+          </div>
+          <div className=" bg-neutral-200 grid place-content-center self-end min-h-16">
+            Block 3
           </div>
         </div>
-
-        <div className="text-sm text-gray-700 text-right">
-          <div>© {new Date().getFullYear()} Trường THPT Phan Bội Châu.</div>
-          <div className="mt-1">Bản quyền thuộc về nhà trường. Mọi quyền được bảo lưu.</div>
+        <div className="text-sm text-gray-700 text-center">
+          <div>© {new Date().getFullYear()} Bộ Giáo Dục Và Đào Tạo.</div>
         </div>
       </div>
     </footer>

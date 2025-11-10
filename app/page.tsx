@@ -6,13 +6,15 @@ export const metadata = { title: "Trang chủ" };
 export default function HomePage() {
   return (
     <div className="">
-      <section className="bg-gray-100 border p-6">
-        <div className=" h-80 bg-gray-800"></div>
-        <div className="flex gap-3 justify-center mt-8">
-          <Button className="rounded-none">Thông báo</Button>
-          <Button variant="outline" className="rounded-none">
-            Liên hệ
-          </Button>
+      <section className="bg-gray-100 border p-4">
+        <div className="container mx-auto">
+          <div className="h-80 bg-gray-800"></div>
+          <div className="flex gap-3 justify-center mt-4">
+            <Button className="rounded-none">Thông báo</Button>
+            <Button variant="outline" className="rounded-none">
+              Liên hệ
+            </Button>
+          </div>
         </div>
       </section>
       <div className="grid grid-cols-[2fr_1fr] gap-6 container mx-auto my-8">
