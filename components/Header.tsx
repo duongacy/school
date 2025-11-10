@@ -1,17 +1,18 @@
 "use client";
 
+import { Container } from "@/components/ui/container";
+import { cn } from "@/lib/cn";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { cn } from "@/lib/cn";
 
 const NAV_ITEMS: { href: string; label: string }[] = [
-  { href: "/", label: "Trang chủ" },
+  //   { href: "/", label: "Trang chủ" },
   { href: "/about", label: "Giới thiệu" },
-  { href: "/admissions", label: "Tuyển sinh" },
-  { href: "/academics", label: "Đào tạo" },
-  { href: "/news", label: "Tin tức & Sự kiện" },
   { href: "/library", label: "Thư viện" },
+  { href: "/community", label: "Cộng đồng" },
+  { href: "/search", label: "Tra cứu" },
   { href: "/contact", label: "Liên hệ" },
+  { href: "/login", label: "Đăng nhập" },
 ];
 
 export default function Header() {
@@ -30,7 +31,6 @@ export default function Header() {
     if (a === "/") return b === "/";
     const aSeg = a.split("/").filter(Boolean);
     const bSeg = b.split("/").filter(Boolean);
-    if (aSeg.length === 0) return false;
     if (a === b) return true;
     if (bSeg.length >= aSeg.length) {
       for (let i = 0; i < aSeg.length; i++) {
@@ -42,15 +42,14 @@ export default function Header() {
   }
 
   const normalizedPath = normalizePath(pathname);
-
   return (
-    <header className="border-b bg-white">
-      <div className="max-w-6xl mx-auto px-4 py-3 flex  items-center justify-between">
-        <Link href="/" className="font-semibold text-lg">
-          School
-        </Link>
-
-        <nav className="flex">
+    <header className="border-b bg-white py-3">
+      <div className="flex items-center container mx-auto justify-between">
+        <Link
+          href="/"
+          className="inline-flex items-center gap-3 h-10 bg-blue-600 w-32"
+        />
+        <nav className="flex" aria-label="Main navigation">
           {NAV_ITEMS.map((item) => {
             const exact = normalizePath(item.href) === normalizedPath;
             const active = isActive(item.href, normalizedPath);
@@ -60,7 +59,11 @@ export default function Header() {
                 href={item.href}
                 className={cn(
                   "px-3 py-1 rounded hover:bg-gray-100",
-                  exact ? "text-blue-600 font-semibold" : active ? "text-blue-600" : "text-gray-700"
+                  exact
+                    ? "text-blue-600 font-semibold"
+                    : active
+                    ? "text-blue-600"
+                    : "text-gray-700"
                 )}
               >
                 {item.label}

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Script from "next/script";
+// Removed next/script dark-mode init — system no longer uses dark mode
 import { cn } from "@/lib/cn";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
@@ -27,34 +27,11 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  // We'll set theme (dark class) on the client before hydration using localStorage
-  // Fallback behavior can be disabled with NEXT_PUBLIC_DISABLE_FALLBACK=true
-  const disableFallback = process.env.NEXT_PUBLIC_DISABLE_FALLBACK === "true";
-  const setInitialColorMode = `(function() {
-    try {
-      var stored = null;
-      try { stored = localStorage.getItem('theme'); } catch(e){}
-      if (stored === 'dark') {
-        document.documentElement.classList.add('dark');
-      } else if (stored === 'light') {
-        document.documentElement.classList.remove('dark');
-      } else {
-        var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-        if (prefersDark) document.documentElement.classList.add('dark');
-      }
-    } catch (e) {}
-  })();`;
+  // Dark-mode initialization removed
 
   return (
     <html suppressHydrationWarning lang="en">
-      <head>
-        {/* If there's no server cookie, run a lightweight script before hydration unless disabled */}
-        {!disableFallback ? (
-          <Script id="theme-init" strategy="beforeInteractive">
-            {setInitialColorMode}
-          </Script>
-        ) : null}
-      </head>
+      <head />
       <body suppressHydrationWarning className={cn(geistSans.variable, geistMono.variable, "flex flex-col antialiased min-h-screen overflow-auto")}>
         <Providers>
           <Header />
