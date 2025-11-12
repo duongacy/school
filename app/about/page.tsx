@@ -233,12 +233,7 @@ export default function AboutPage() {
           <h2 className="text-3xl font-semibold">Lãnh đạo hiện nay</h2>
           <div className="border mx-auto w-fit p-4 bg-blue-50 flex flex-col items-center gap-2 mt-4">
             <div className="w-26 h-32 shrink-0 relative">
-              <Image
-                alt=""
-                fill
-                objectFit="cover"
-                src="/images/about/nguyen_kim_son.png"
-              />
+              <Image alt="" fill src="/images/about/nguyen_kim_son.png" style={{ objectFit: 'cover' }} />
             </div>
             <p className="mt-1 text-center">
               <b>Bộ trưởng Nguyễn Kim Sơn</b>
@@ -249,13 +244,8 @@ export default function AboutPage() {
           </div>
           <div className="grid grid-cols-[repeat(5,1fr)] w-fit mx-auto mt-4 gap-4">
             <div className="text-xs p-4  flex flex-col items-center gap-2 mt-4">
-              <div className="w-20 h-24 shrink-0 relative">
-                <Image
-                  alt=""
-                  fill
-                  objectFit="cover"
-                  src="/images/about/pham_ngoc_thuong.png"
-                />
+                <div className="w-20 h-24 shrink-0 relative">
+                <Image alt="" fill src="/images/about/pham_ngoc_thuong.png" style={{ objectFit: 'cover' }} />
               </div>
               <p className="mt-1 text-center">
                 <b>Thứ trưởng Phạm Ngọc Thưởng</b>
@@ -265,14 +255,9 @@ export default function AboutPage() {
               </p>
             </div>
             <div className="text-xs p-4  flex flex-col items-center gap-2 mt-4">
-              <div className="w-20 h-24 shrink-0 relative">
-                <Image
-                  alt=""
-                  fill
-                  objectFit="cover"
-                  src="/images/about/nguyen_van_phuc.png"
-                />
-              </div>
+                <div className="w-20 h-24 shrink-0 relative">
+                  <Image alt="" fill src="/images/about/nguyen_van_phuc.png" style={{ objectFit: 'cover' }} />
+                </div>
               <p className="mt-1 text-center">
                 <b>Thứ trưởng Nguyễn Văn Phúc</b>
                 <br />
@@ -281,12 +266,7 @@ export default function AboutPage() {
             </div>
             <div className="text-xs p-4  flex flex-col items-center gap-2 mt-4">
               <div className="w-20 h-24 shrink-0 relative">
-                <Image
-                  alt=""
-                  fill
-                  objectFit="cover"
-                  src="/images/about/le_quan.png"
-                />
+                <Image alt="" fill src="/images/about/le_quan.png" style={{ objectFit: 'cover' }} />
               </div>
               <p className="mt-1 text-center">
                 <b>Thứ trưởng Lê Quân</b>
@@ -294,12 +274,7 @@ export default function AboutPage() {
             </div>
             <div className="text-xs p-4  flex flex-col items-center gap-2 mt-4">
               <div className="w-20 h-24 shrink-0 relative">
-                <Image
-                  alt=""
-                  fill
-                  objectFit="cover"
-                  src="/images/about/nguyen_thi_kim_chi.png"
-                />
+                <Image alt="" fill src="/images/about/nguyen_thi_kim_chi.png" style={{ objectFit: 'cover' }} />
               </div>
               <p className="mt-1 text-center">
                 <b> Thứ trưởng Nguyễn Thị Kim Chi</b>
@@ -307,12 +282,7 @@ export default function AboutPage() {
             </div>
             <div className="text-xs p-4  flex flex-col items-center gap-2 mt-4">
               <div className="w-20 h-24 shrink-0 relative">
-                <Image
-                  alt=""
-                  fill
-                  objectFit="cover"
-                  src="/images/about/le_tan_dung.png"
-                />
+                <Image alt="" fill src="/images/about/le_tan_dung.png" style={{ objectFit: 'cover' }} />
               </div>
               <p className="mt-1 text-center">
                 <b> Thứ trưởng Lê Tấn Dũng</b>

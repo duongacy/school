@@ -1,15 +1,19 @@
+"use client";
+import { useAllEvents } from "@/api/event/hooks";
 import { Button } from "@/components/ui/button";
+import announcements from "@/data/announcements.json";
+import documents from "@/data/documents.json";
+import students from "@/data/students.json";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
-import events from "@/data/events";
-import students from "@/data/students.json";
-import documents from "@/data/documents.json";
-import announcements from "@/data/announcements.json";
 import React from "react";
 
-export const metadata = { title: "Trang chủ" };
+const normalizeImageUrl = (url: string) => {
+  return `http://127.0.0.1:1337${url}`;
+};
 
 export default function HomePage() {
+  const allEventsQuery = useAllEvents();
   return (
     <div className="">
       <section className="bg-gray-100 border p-4">
@@ -17,9 +21,9 @@ export default function HomePage() {
           <div className="h-80 relative">
             <Image
               src="/home/h1.png"
-              objectFit="cover"
               alt="Description"
               fill
+              style={{ objectFit: "cover" }}
             />
           </div>
           <div className="flex gap-3 justify-center mt-4">
@@ -34,29 +38,31 @@ export default function HomePage() {
         <div className="space-y-6">
           <HomeBlock title="Tin tức & Sự kiện">
             <div className="space-y-3">
-              {events.map((ev) => (
-                <EventItem
-                  key={ev.id}
-                  date={ev.date}
-                  title={ev.title}
-                  description={ev.description}
-                  image={ev.image ?? ""}
-                />
-              ))}
+              {allEventsQuery.data?.data.map((event) => {
+                return (
+                  <NewsItem
+                    key={event.documentId}
+                    date={event.ngay}
+                    title={event.tieu_de}
+                    description={event.mo_ta}
+                    imageSrc={normalizeImageUrl(event.hinh_anh?.url ?? "")}
+                  />
+                );
+              })}
             </div>
           </HomeBlock>
 
           {/* Featured / Highlights */}
           <HomeBlock title="Học sinh nổi bật">
             <div className="grid grid-cols-2 gap-3">
-              {students.map((s) => (
-                <StudentItem
-                  key={s.id}
-                  name={s.name}
-                  school={s.school}
-                  grade={s.grade}
-                  achievement={s.achievement}
-                  image={s.image}
+              {students.map((student) => (
+                <StudentCard
+                  key={student.id}
+                  name={student.name}
+                  school={student.school}
+                  grade={student.grade}
+                  achievement={student.achievement}
+                  avatarSrc={normalizeImageUrl(student.image ?? "")}
                 />
               ))}
             </div>
@@ -67,9 +73,9 @@ export default function HomePage() {
           <HomeBlock title="Thông báo nhanh">
             <ul className="space-y-3">
               {announcements.map(
-                (a: { id: string; text: string; date?: string }) => (
-                  <li key={a.id} className="p-2 bg-gray-50">
-                    {a.text}
+                (announcement: { id: string; text: string; date?: string }) => (
+                  <li key={announcement.id} className="p-2 bg-gray-50">
+                    {announcement.text}
                   </li>
                 )
               )}
@@ -79,9 +85,9 @@ export default function HomePage() {
           <HomeBlock title="Văn bản mới">
             <ul className="space-y-3">
               {documents.map(
-                (d: { id: string; title: string; date?: string }) => (
-                  <li key={d.id} className="p-2 bg-gray-50">
-                    {d.title}
+                (doc: { id: string; title: string; date?: string }) => (
+                  <li key={doc.id} className="p-2 bg-gray-50">
+                    {doc.title}
                   </li>
                 )
               )}
@@ -93,23 +99,29 @@ export default function HomePage() {
   );
 }
 
-const EventItem = ({
+const NewsItem = ({
   className,
   date,
   description,
   title,
-  image,
+  imageSrc,
 }: {
   className?: string;
   date: string;
   title: string;
   description: string;
-  image: string;
+  imageSrc: string;
 }) => {
   return (
     <article className={cn("p-3 border bg-gray-50", className)}>
       <div className="bg-gray-200 aspect-2/1 relative">
-        <Image src={image} alt="" objectFit="cover" fill />
+        <Image
+          src={imageSrc}
+          alt=""
+          fill
+          className="object-cover"
+          unoptimized
+        />
       </div>
       <div className="text-sm text-slate-500 mt-3">{date}</div>
       <div className="mt-1 font-medium">{title}</div>
@@ -118,26 +130,32 @@ const EventItem = ({
   );
 };
 
-const StudentItem = ({
+const StudentCard = ({
   className,
   name,
   grade,
   achievement,
   school,
-  image,
+  avatarSrc,
 }: {
   className?: string;
   name: string;
   grade: string;
   achievement: string;
   school: string;
-  image: string;
+  avatarSrc: string;
 }) => {
   return (
     <div className={cn("p-3 border bg-gray-50", className)}>
       <div className=" grid grid-cols-[auto_1fr] gap-3">
         <div className="mb-2 rounded-full w-16 h-16 bg-gray-200 overflow-hidden relative">
-          <Image src={image} alt={name} objectFit="cover" fill />
+          <Image
+            src={avatarSrc}
+            alt={name}
+            fill
+            style={{ objectFit: "cover" }}
+            unoptimized
+          />
         </div>
         <div>
           <div className="font-medium">{name}</div>
