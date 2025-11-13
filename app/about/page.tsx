@@ -169,8 +169,10 @@ export default function AboutPage() {
               37/2025/NĐ-CP.
             </p>
             <br />
-            <p>
-              <b>1. Quản lý Mục tiêu và Chương trình Đào tạo</b> <br />
+            <div>
+              <p>
+                <b>1. Quản lý Mục tiêu và Chương trình Đào tạo</b>
+              </p>
               <ul className=" list-disc pl-8">
                 <li>
                   Quy định mục tiêu giáo dục và chương trình cho giáo dục mầm
@@ -186,10 +188,12 @@ export default function AboutPage() {
                   sau tốt nghiệp các trình độ từ trung cấp sư phạm đến tiến sĩ.
                 </li>
               </ul>
-            </p>
+            </div>
             <br />
-            <p>
-              <b>2. Quản lý Sách giáo khoa, Giáo trình & Tài liệu</b> <br />
+            <div>
+              <p>
+                <b>2. Quản lý Sách giáo khoa, Giáo trình & Tài liệu</b>
+              </p>
               <ul className="list-disc pl-8">
                 <li>
                   Quy định việc biên soạn, thẩm định, phê duyệt sách giáo khoa
@@ -208,10 +212,12 @@ export default function AboutPage() {
                   phòng và an ninh sử dụng thống nhất.
                 </li>
               </ul>
-            </p>
+            </div>
             <br />
-            <p>
-              <b>3. Quản lý Chất lượng và Chuẩn Quốc gia</b> <br />
+            <div>
+              <p>
+                <b>3. Quản lý Chất lượng và Chuẩn Quốc gia</b>
+              </p>
               <ul className="list-disc pl-8">
                 <li>
                   Ban hành chuẩn quốc gia đối với cơ sở giáo dục, đào tạo.
@@ -225,7 +231,7 @@ export default function AboutPage() {
                   trình đào tạo.
                 </li>
               </ul>
-            </p>
+            </div>
           </div>
         </div>
 

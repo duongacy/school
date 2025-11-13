@@ -1,44 +1,7 @@
-type StrapiImageFormat = {
-  name: string;
-  hash: string;
-  ext: string;
-  mime: string;
-  path: string | null;
-  width: number;
-  height: number;
-  size: number;
-  sizeInBytes: number;
-  url: string;
-};
+import { API_BASE_URL } from "@/lib/consts";
+import { StrapiImage } from "../strapi-common-type";
 
-type StrapiImage = {
-  id: number;
-  documentId: string;
-  name: string;
-  alternativeText: string | null;
-  caption: string | null;
-  width: number;
-  height: number;
-  hash: string;
-  ext: string;
-  mime: string;
-  size: number;
-  url: string;
-  previewUrl: string | null;
-  provider: string;
-  provider_metadata: string | null;
-  createdAt: string;
-  updatedAt: string;
-  publishedAt?: string | null;
-  formats: {
-    thumbnail: StrapiImageFormat;
-    small: StrapiImageFormat;
-    medium: StrapiImageFormat;
-    large: StrapiImageFormat;
-  };
-};
-
-type StrapiEvent = {
+export type EventDto = {
   id: number;
   documentId: string;
   createdAt: string;
@@ -52,14 +15,13 @@ type StrapiEvent = {
   hinh_anh?: StrapiImage;
 };
 
-export async function getAllEvents() {
+export async function fetchAllEvents(): Promise<{ data: EventDto[] } | undefined> {
   try {
-    const response = await fetch(
-      "http://127.0.0.1:1337/api/events?populate=hinh_anh"
-    );
+    const response = await fetch(`${API_BASE_URL}/api/events?populate=hinh_anh`);
     const result = await response.json();
-    return result as { data: StrapiEvent[] };
+    return result as { data: EventDto[] };
   } catch (error) {
-    console.error(error);
+    console.error('fetchAllEvents error:', error);
+    return undefined;
   }
 }

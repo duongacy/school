@@ -1,19 +1,20 @@
 "use client";
 import { useAllEvents } from "@/api/event/hooks";
+import { useAllStudents } from "@/api/hoc-sinh-noi-bat/hooks";
+import { useAllNotices } from "@/api/thong-bao/hooks";
+import { useAllVanBans } from "@/api/van-ban/hooks";
 import { Button } from "@/components/ui/button";
-import announcements from "@/data/announcements.json";
-import documents from "@/data/documents.json";
-import students from "@/data/students.json";
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/cn";
+import { normalizeImageUrl } from "@/lib/utils";
 import Image from "next/image";
 import React from "react";
 
-const normalizeImageUrl = (url: string) => {
-  return `http://127.0.0.1:1337${url}`;
-};
-
 export default function HomePage() {
   const allEventsQuery = useAllEvents();
+  const allStudentsQuery = useAllStudents();
+  const allNoticesQuery = useAllNotices();
+  const allVanBansQuery = useAllVanBans();
+
   return (
     <div className="">
       <section className="bg-gray-100 border p-4">
@@ -55,14 +56,14 @@ export default function HomePage() {
           {/* Featured / Highlights */}
           <HomeBlock title="Học sinh nổi bật">
             <div className="grid grid-cols-2 gap-3">
-              {students.map((student) => (
+              {allStudentsQuery.data?.data.map((student) => (
                 <StudentCard
                   key={student.id}
-                  name={student.name}
-                  school={student.school}
-                  grade={student.grade}
-                  achievement={student.achievement}
-                  avatarSrc={normalizeImageUrl(student.image ?? "")}
+                  name={student.ten}
+                  school={student.truong}
+                  grade={student.lop}
+                  achievement={student.thanh_tich}
+                  avatarSrc={normalizeImageUrl(student.hinh_anh?.url ?? "")}
                 />
               ))}
             </div>
@@ -72,25 +73,21 @@ export default function HomePage() {
         <aside className="space-y-3">
           <HomeBlock title="Thông báo nhanh">
             <ul className="space-y-3">
-              {announcements.map(
-                (announcement: { id: string; text: string; date?: string }) => (
-                  <li key={announcement.id} className="p-2 bg-gray-50">
-                    {announcement.text}
-                  </li>
-                )
-              )}
+              {allNoticesQuery.data?.data.map((announcement) => (
+                <li key={announcement.id} className="p-2 bg-gray-50">
+                  {announcement.tieu_de}
+                </li>
+              ))}
             </ul>
           </HomeBlock>
 
           <HomeBlock title="Văn bản mới">
             <ul className="space-y-3">
-              {documents.map(
-                (doc: { id: string; title: string; date?: string }) => (
-                  <li key={doc.id} className="p-2 bg-gray-50">
-                    {doc.title}
-                  </li>
-                )
-              )}
+              {allVanBansQuery.data?.data.map((doc) => (
+                <li key={doc.id} className="p-2 bg-gray-50">
+                  {doc.tieu_de}
+                </li>
+              ))}
             </ul>
           </HomeBlock>
         </aside>
@@ -166,9 +163,9 @@ const StudentCard = ({
         </div>
       </div>
 
-      <p className="text-sm text-center mt-1 font-bold col-span-2">
+      <div className="text-sm text-center mt-1 font-bold col-span-2">
         {achievement}
-      </p>
+      </div>
     </div>
   );
 };
