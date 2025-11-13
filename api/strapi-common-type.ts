@@ -37,3 +37,21 @@ export type StrapiImage = {
     large: StrapiImageFormat;
   };
 };
+
+export type StrapiCollectionMeta = {
+  pagination: {
+    page: number;
+    pageSize: number;
+    pageCount: number;
+    total: number;
+  };
+};
+
+export type StrapiCollectionResponse<T> = {
+  data: T[];
+  meta: StrapiCollectionMeta;
+};
+
+export type StrapiSingleResponse<T> = {
+  data: T;
+};

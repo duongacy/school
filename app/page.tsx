@@ -7,13 +7,32 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/cn";
 import { normalizeImageUrl } from "@/lib/utils";
 import Image from "next/image";
-import React from "react";
+import React, { useState } from "react";
 
 export default function HomePage() {
-  const allEventsQuery = useAllEvents();
-  const allStudentsQuery = useAllStudents();
-  const allNoticesQuery = useAllNotices();
-  const allVanBansQuery = useAllVanBans();
+  const [eventPageSize, setEventPageSize] = React.useState(2);
+  const allEventsQuery = useAllEvents({
+    "pagination[page]": 1,
+    "pagination[pageSize]": eventPageSize,
+  });
+
+  const [studentPageSize, setStudentPageSize] = useState(2);
+  const allStudentsQuery = useAllStudents({
+    "pagination[page]": 1,
+    "pagination[pageSize]": studentPageSize,
+  });
+
+  const [noticePageSize, setNoticePageSize] = useState(2);
+  const allNoticesQuery = useAllNotices({
+    "pagination[page]": 1,
+    "pagination[pageSize]": noticePageSize,
+  });
+
+  const [vanBanPageSize, setVanBanPageSize] = useState(2);
+  const allVanBansQuery = useAllVanBans({
+    "pagination[page]": 1,
+    "pagination[pageSize]": vanBanPageSize,
+  });
 
   return (
     <div className="">
@@ -51,6 +70,16 @@ export default function HomePage() {
                 );
               })}
             </div>
+            {eventPageSize <
+              (allEventsQuery.data?.meta.pagination.total || 0) && (
+              <Button
+                className="mt-4 block w-fit mx-auto"
+                variant="outline"
+                onClick={() => setEventPageSize((prev) => prev + 1)}
+              >
+                Xem thêm
+              </Button>
+            )}
           </HomeBlock>
 
           {/* Featured / Highlights */}
@@ -67,6 +96,16 @@ export default function HomePage() {
                 />
               ))}
             </div>
+            {studentPageSize <
+              (allStudentsQuery.data?.meta.pagination.total || 0) && (
+              <Button
+                className="mt-4 block w-fit mx-auto"
+                variant="outline"
+                onClick={() => setStudentPageSize((prev) => prev + 1)}
+              >
+                Xem thêm
+              </Button>
+            )}
           </HomeBlock>
         </div>
 
@@ -79,6 +118,16 @@ export default function HomePage() {
                 </li>
               ))}
             </ul>
+            {noticePageSize <
+              (allNoticesQuery.data?.meta.pagination.total || 0) && (
+              <Button
+                className="mt-4 block w-fit mx-auto"
+                variant="outline"
+                onClick={() => setNoticePageSize((prev) => prev + 1)}
+              >
+                Xem thêm
+              </Button>
+            )}
           </HomeBlock>
 
           <HomeBlock title="Văn bản mới">
@@ -89,6 +138,16 @@ export default function HomePage() {
                 </li>
               ))}
             </ul>
+            {vanBanPageSize <
+              (allVanBansQuery.data?.meta.pagination.total || 0) && (
+              <Button
+                className="mt-4 block w-fit mx-auto"
+                variant="outline"
+                onClick={() => setVanBanPageSize((prev) => prev + 1)}
+              >
+                Xem thêm
+              </Button>
+            )}
           </HomeBlock>
         </aside>
       </div>

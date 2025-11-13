@@ -1,5 +1,6 @@
 import { API_BASE_URL } from "@/lib/consts";
-import { StrapiImage } from "../strapi-common-type";
+import { StrapiCollectionResponse, StrapiImage } from "../strapi-common-type";
+import { bindParams } from "@/lib/utils";
 
 type StrapiStudent = {
   id: string;
@@ -10,17 +11,20 @@ type StrapiStudent = {
   thanh_tich: string;
   createdAt: string;
   updatedAt: string;
-  publishedAt: string | null;
+  publishedAt: string;
   hinh_anh?: StrapiImage;
 };
 
-export async function getAllStudents() {
+export async function getAllStudents(params?: Record<string, string | number>) {
   try {
     const response = await fetch(
-      `${API_BASE_URL}/api/hoc-sinh-noi-bats?populate=hinh_anh`
+      bindParams(`${API_BASE_URL}/api/hoc-sinh-noi-bats`, {
+        ...params,
+        populate: "hinh_anh",
+      })
     );
     const result = await response.json();
-    return result as { data: StrapiStudent[] };
+    return result as StrapiCollectionResponse<StrapiStudent>;
   } catch (error) {
     console.error(error);
   }

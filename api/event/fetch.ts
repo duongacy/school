@@ -1,12 +1,13 @@
 import { API_BASE_URL } from "@/lib/consts";
-import { StrapiImage } from "../strapi-common-type";
+import { StrapiCollectionResponse, StrapiImage } from "../strapi-common-type";
+import { bindParams } from "@/lib/utils";
 
 export type EventDto = {
   id: number;
   documentId: string;
   createdAt: string;
   updatedAt: string;
-  publishedAt?: string;
+  publishedAt: string;
   locale: string;
   tieu_de: string;
   mo_ta: string;
@@ -15,13 +16,18 @@ export type EventDto = {
   hinh_anh?: StrapiImage;
 };
 
-export async function fetchAllEvents(): Promise<{ data: EventDto[] } | undefined> {
+export async function fetchAllEvents(params?: Record<string, string | number>) {
   try {
-    const response = await fetch(`${API_BASE_URL}/api/events?populate=hinh_anh`);
+    const response = await fetch(
+      bindParams(`${API_BASE_URL}/api/events`, {
+        ...params,
+        populate: "hinh_anh",
+      })
+    );
     const result = await response.json();
-    return result as { data: EventDto[] };
+    return result as StrapiCollectionResponse<EventDto>;
   } catch (error) {
-    console.error('fetchAllEvents error:', error);
+    console.error("fetchAllEvents error:", error);
     return undefined;
   }
 }

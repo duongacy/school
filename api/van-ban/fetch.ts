@@ -1,4 +1,6 @@
 import { API_BASE_URL } from "@/lib/consts";
+import { bindParams } from "@/lib/utils";
+import { StrapiCollectionResponse } from "../strapi-common-type";
 
 export type VanBanDto = {
   id: string;
@@ -7,20 +9,18 @@ export type VanBanDto = {
   noi_dung: string;
   createdAt: string;
   updatedAt: string;
-  publishedAt: string | null;
+  publishedAt: string;
 };
 
-/**
- * Fetch all "văn bản" records from the Strapi API.
- * Returns the raw DTO structure returned by Strapi.
- */
-export async function fetchAllVanBans(): Promise<{ data: VanBanDto[] } | undefined> {
+export async function fetchAllVanBans(
+  params?: Record<string, string | number>
+) {
   try {
-    const res = await fetch(`${API_BASE_URL}/api/van-bans`);
+    const res = await fetch(bindParams(`${API_BASE_URL}/api/van-bans`, params));
     const json = await res.json();
-    return json as { data: VanBanDto[] };
+    return json as StrapiCollectionResponse<VanBanDto>;
   } catch (err) {
-    console.error('fetchAllVanBans error:', err);
+    console.error("fetchAllVanBans error:", err);
     return undefined;
   }
 }
