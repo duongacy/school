@@ -1,9 +1,16 @@
 "use client";
-import { useAllEvents } from "@/api/event/hooks";
+import { EventDto } from "@/api/event/fetch";
+import { useAllEvents, useEventByDocumentId } from "@/api/event/hooks";
 import { useAllStudents } from "@/api/hoc-sinh-noi-bat/hooks";
 import { useAllNotices } from "@/api/thong-bao/hooks";
 import { useAllVanBans } from "@/api/van-ban/hooks";
 import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { cn } from "@/lib/cn";
 import { normalizeImageUrl } from "@/lib/utils";
 import Image from "next/image";
@@ -34,8 +41,16 @@ export default function HomePage() {
     "pagination[pageSize]": vanBanPageSize,
   });
 
+  const [selectedEventId, setSelectedEventId] = useState<string | undefined>(
+    undefined
+  );
+
   return (
     <div className="">
+      <EventDialog
+        eventId={selectedEventId}
+        onCancel={() => setSelectedEventId(undefined)}
+      />
       <section className="bg-gray-100 border p-4">
         <div className="container mx-auto">
           <div className="h-80 relative">
@@ -60,12 +75,10 @@ export default function HomePage() {
             <div className="space-y-3">
               {allEventsQuery.data?.data.map((event) => {
                 return (
-                  <NewsItem
+                  <EventItem
                     key={event.documentId}
-                    date={event.ngay}
-                    title={event.tieu_de}
-                    description={event.mo_ta}
-                    imageSrc={normalizeImageUrl(event.hinh_anh?.url ?? "")}
+                    event={event}
+                    onSelect={setSelectedEventId}
                   />
                 );
               })}
@@ -155,33 +168,36 @@ export default function HomePage() {
   );
 }
 
-const NewsItem = ({
+const EventItem = ({
   className,
-  date,
-  description,
-  title,
-  imageSrc,
+  event,
+  onSelect,
 }: {
   className?: string;
-  date: string;
-  title: string;
-  description: string;
-  imageSrc: string;
+  event?: EventDto;
+  onSelect?: (eventId: string) => void;
 }) => {
   return (
-    <article className={cn("p-3 border bg-gray-50", className)}>
+    <article
+      className={cn("p-3 border bg-gray-50 cursor-pointer", className)}
+      onClick={() => {
+        if (event) {
+          onSelect?.(event.documentId);
+        }
+      }}
+    >
       <div className="bg-gray-200 aspect-2/1 relative">
         <Image
-          src={imageSrc}
+          src={normalizeImageUrl(event?.hinh_anh?.url ?? "")}
           alt=""
           fill
           className="object-cover"
           unoptimized
         />
       </div>
-      <div className="text-sm text-slate-500 mt-3">{date}</div>
-      <div className="mt-1 font-medium">{title}</div>
-      <p className="text-sm text-muted-foreground mt-1">{description}</p>
+      <div className="text-sm text-slate-500 mt-3">{event?.ngay}</div>
+      <div className="mt-1 font-medium">{event?.tieu_de}</div>
+      <p className="text-sm text-muted-foreground mt-1">{event?.mo_ta}</p>
     </article>
   );
 };
@@ -243,5 +259,49 @@ const HomeBlock = ({
       <h2 className="text-3xl font-semibold">{title}</h2>
       <div className="text-sm mt-2">{children}</div>
     </div>
+  );
+};
+
+const EventDialog = ({
+  eventId,
+  onCancel,
+}: {
+  eventId?: string;
+  onCancel?: () => void;
+}) => {
+  const eventQuery = useEventByDocumentId(eventId ?? "");
+  return (
+    <Dialog open={!!eventId} onOpenChange={onCancel}>
+      <DialogContent className="w-[96%] h-[96%] sm:max-w-[90%] sm:h-[90%] flex flex-col">
+        <DialogTitle className="hidden">
+          {eventQuery.data?.data.tieu_de}
+        </DialogTitle>
+        <div className="text-3xl font-semibold">
+          {eventQuery.data?.data.tieu_de}
+        </div>
+        <div className="basis-0 grow overflow-auto">
+          {eventQuery.data?.data.hinh_anh && (
+            <div className=" h-[450px] relative mb-4 bg-gray-400">
+              <Image
+                src={normalizeImageUrl(
+                  eventQuery.data?.data.hinh_anh.url ?? ""
+                )}
+                alt={eventQuery.data?.data.tieu_de || ""}
+                fill
+                className="object-contain"
+                unoptimized
+              />
+            </div>
+          )}
+
+          {eventQuery.data?.data.noi_dung}
+        </div>
+        <DialogFooter>
+          <Button type="button" onClick={onCancel}>
+            Đóng
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   );
 };
