@@ -9,7 +9,7 @@ export const useAllEvents = (params?: Record<string, string | number>) => {
   });
 };
 
-export const useEventByDocumentId = (documentId: string) => {
+export const useEventByDocumentId = (documentId?: string) => {
   return useQuery({
     enabled: !!documentId,
     queryKey: ["event", documentId],

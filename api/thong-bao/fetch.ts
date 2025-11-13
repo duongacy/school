@@ -1,6 +1,6 @@
 import { API_BASE_URL } from "@/lib/consts";
 import { bindParams } from "@/lib/utils";
-import { StrapiCollectionResponse } from "../strapi-common-type";
+import { StrapiCollectionResponse, StrapiSingleResponse } from "../strapi-common-type";
 
 export type NoticeDto = {
   id: string;
@@ -23,6 +23,19 @@ export async function fetchAllNotices(
     return result as StrapiCollectionResponse<NoticeDto>;
   } catch (error) {
     console.error("fetchAllNotices error:", error);
+    return undefined;
+  }
+}
+
+export async function fetchNoticeByDocumentId(documentId: string) {
+  try {
+    const response = await fetch(
+      bindParams(`${API_BASE_URL}/api/thong-baos/${documentId}`, {})
+    );
+    const result = await response.json();
+    return result as StrapiSingleResponse<NoticeDto>;
+  } catch (error) {
+    console.error("fetchNoticeByDocumentId error:", error);
     return undefined;
   }
 }
