@@ -7,17 +7,15 @@ import {
 import { bindParams } from "@/lib/utils";
 
 export type EventDto = {
-  id: number;
   documentId: string;
   createdAt: string;
   updatedAt: string;
   publishedAt: string;
-  locale: string;
-  tieu_de: string;
-  mo_ta: string;
-  noi_dung: string;
-  ngay: string;
-  hinh_anh?: StrapiImage;
+  title: string;
+  description: string;
+  image: StrapiImage;
+  content: string;
+  date: string;
 };
 
 export async function fetchAllEvents(params?: Record<string, string | number>) {
@@ -25,7 +23,7 @@ export async function fetchAllEvents(params?: Record<string, string | number>) {
     const response = await fetch(
       bindParams(`${API_FULL_URL}/api/events`, {
         ...params,
-        populate: "hinh_anh",
+        populate: "image",
       })
     );
     const result = await response.json();
@@ -40,7 +38,7 @@ export async function fetchEventByDocumentId(documentId: string) {
   try {
     const response = await fetch(
       bindParams(`${API_FULL_URL}/api/events/${documentId}`, {
-        populate: "hinh_anh",
+        populate: "image",
       })
     );
     const result = await response.json();

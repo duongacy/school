@@ -1,15 +1,15 @@
 import { API_FULL_URL } from "@/lib/consts";
 import { bindParams } from "@/lib/utils";
-import { StrapiCollectionResponse, StrapiSingleResponse } from "../strapi-common-type";
+import {
+  StrapiCollectionResponse,
+  StrapiSingleResponse,
+} from "../strapi-common-type";
 
-export type NoticeDto = {
-  id: string;
+export type AnnouncementDto = {
   documentId: string;
-  tieu_de: string;
-  noi_dung: string;
-  createdAt: string;
-  updatedAt: string;
-  publishedAt: string;
+  title: string;
+  description: string;
+  content: string;
 };
 
 export async function fetchAllNotices(
@@ -17,10 +17,10 @@ export async function fetchAllNotices(
 ) {
   try {
     const response = await fetch(
-      bindParams(`${API_FULL_URL}/api/thong-baos`, { ...params })
+      bindParams(`${API_FULL_URL}/api/announcements`, { ...params })
     );
     const result = await response.json();
-    return result as StrapiCollectionResponse<NoticeDto>;
+    return result as StrapiCollectionResponse<AnnouncementDto>;
   } catch (error) {
     console.error("fetchAllNotices error:", error);
     return undefined;
@@ -30,10 +30,10 @@ export async function fetchAllNotices(
 export async function fetchNoticeByDocumentId(documentId: string) {
   try {
     const response = await fetch(
-      bindParams(`${API_FULL_URL}/api/thong-baos/${documentId}`, {})
+      bindParams(`${API_FULL_URL}/api/announcements/${documentId}`, {})
     );
     const result = await response.json();
-    return result as StrapiSingleResponse<NoticeDto>;
+    return result as StrapiSingleResponse<AnnouncementDto>;
   } catch (error) {
     console.error("fetchNoticeByDocumentId error:", error);
     return undefined;

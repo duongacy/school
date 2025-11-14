@@ -6,30 +6,26 @@ import {
 } from "../strapi-common-type";
 import { bindParams } from "@/lib/utils";
 
-export type StudentDto = {
-  id: string;
+export type OutstandingStudentDto = {
   documentId: string;
-  ten: string;
-  truong: string;
-  lop: string;
-  thanh_tich: string;
-  createdAt: string;
-  updatedAt: string;
-  publishedAt: string;
-  hinh_anh?: StrapiImage;
-  noi_dung?: string;
+  name: string;
+  school: string;
+  class: string;
+  achievement: string;
+  image?: StrapiImage;
+  content?: string;
 };
 
 export async function getAllStudents(params?: Record<string, string | number>) {
   try {
     const response = await fetch(
-      bindParams(`${API_FULL_URL}/api/hoc-sinh-noi-bats`, {
+      bindParams(`${API_FULL_URL}/api/outstanding-students`, {
         ...params,
-        populate: "hinh_anh",
+        populate: "image",
       })
     );
     const result = await response.json();
-    return result as StrapiCollectionResponse<StudentDto>;
+    return result as StrapiCollectionResponse<OutstandingStudentDto>;
   } catch (error) {
     console.error(error);
   }
@@ -38,12 +34,12 @@ export async function getAllStudents(params?: Record<string, string | number>) {
 export async function getStudentByDocumentId(documentId: string) {
   try {
     const response = await fetch(
-      bindParams(`${API_FULL_URL}/api/hoc-sinh-noi-bats/${documentId}`, {
-        populate: "hinh_anh",
+      bindParams(`${API_FULL_URL}/api/outstanding-students/${documentId}`, {
+        populate: "image",
       })
     );
     const result = await response.json();
-    return result as StrapiSingleResponse<StudentDto>;
+    return result as StrapiSingleResponse<OutstandingStudentDto>;
   } catch (error) {
     console.error(error);
   }

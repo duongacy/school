@@ -1,13 +1,13 @@
 "use client";
 import { EventDto } from "@/api/event/fetch";
 import { useAllEvents, useEventByDocumentId } from "@/api/event/hooks";
-import { StudentDto } from "@/api/hoc-sinh-noi-bat/fetch";
+import { OutstandingStudentDto } from "@/api/outstanding-student/fetch";
 import {
   useAllStudents,
   useStudentByDocumentId,
-} from "@/api/hoc-sinh-noi-bat/hooks";
-import { useAllNotices, useNoticeByDocumentId } from "@/api/thong-bao/hooks";
-import { useAllVanBans, useVanBanByDocumentId } from "@/api/van-ban/hooks";
+} from "@/api/outstanding-student/hooks";
+import { useAllNotices, useNoticeByDocumentId } from "@/api/announcement/hooks";
+import { useAllVanBans, useVanBanByDocumentId } from "@/api/legal-document/hooks";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -216,16 +216,16 @@ const EventItem = ({
     >
       <div className="bg-gray-200 aspect-2/1 relative">
         <Image
-          src={normalizeImageUrl(event?.hinh_anh?.url ?? "")}
+          src={normalizeImageUrl(event?.image?.url ?? "")}
           alt=""
           fill
           className="object-cover"
           unoptimized
         />
       </div>
-      <div className="text-sm text-slate-500 mt-3">{event?.ngay}</div>
-      <div className="mt-1 font-medium">{event?.tieu_de}</div>
-      <p className="text-sm text-muted-foreground mt-1">{event?.mo_ta}</p>
+      <div className="text-sm text-slate-500 mt-3">{event?.date}</div>
+      <div className="mt-1 font-medium">{event?.title}</div>
+      <p className="text-sm text-muted-foreground mt-1">{event?.description}</p>
     </article>
   );
 };
@@ -236,7 +236,7 @@ const StudentCard = ({
   onSelect,
 }: {
   className?: string;
-  student: StudentDto;
+  student: OutstandingStudentDto;
   onSelect?: () => void;
 }) => {
   return (
@@ -245,29 +245,29 @@ const StudentCard = ({
         <div className="mb-2 rounded-full w-16 h-16 bg-gray-200 overflow-hidden relative">
           <Image
             src={
-              student.hinh_anh
-                ? normalizeImageUrl(student.hinh_anh.url)
+              student.image
+                ? normalizeImageUrl(student.image.url)
                 : "/default-avatar.png"
             }
-            alt={student.ten}
+            alt={student.name}
             fill
             style={{ objectFit: "cover" }}
             unoptimized
           />
         </div>
         <div>
-          <div className="font-medium">{student.ten}</div>
+          <div className="font-medium">{student.name}</div>
           <div className="text-sm text-slate-500 col-span-2">
-            Lớp: {student.lop}
+            Lớp: {student.class}
           </div>
           <div className="text-sm text-slate-500 col-span-2">
-            Trường: {student.truong}
+            Trường: {student.school}
           </div>
         </div>
       </div>
 
       <div className="text-sm text-center mt-1 font-bold col-span-2">
-        {student.thanh_tich}
+        {student.achievement}
       </div>
     </div>
   );
@@ -302,19 +302,17 @@ const EventDialog = ({
     <Dialog open={!!documentId} onOpenChange={onCancel}>
       <DialogContent className="w-[96%] h-[96%] sm:max-w-[90%] sm:h-[90%] flex flex-col">
         <DialogTitle className="hidden">
-          {eventQuery.data?.data.tieu_de}
+          {eventQuery.data?.data.title}
         </DialogTitle>
         <div className="text-3xl font-semibold">
-          {eventQuery.data?.data.tieu_de}
+          {eventQuery.data?.data.title}
         </div>
         <div className="basis-0 grow overflow-auto">
-          {eventQuery.data?.data.hinh_anh && (
+          {eventQuery.data?.data.image && (
             <div className=" h-[450px] relative mb-4 bg-gray-400">
               <Image
-                src={normalizeImageUrl(
-                  eventQuery.data?.data.hinh_anh.url ?? ""
-                )}
-                alt={eventQuery.data?.data.tieu_de || ""}
+                src={normalizeImageUrl(eventQuery.data?.data.image.url ?? "")}
+                alt={eventQuery.data?.data.title || ""}
                 fill
                 className="object-contain"
                 unoptimized
@@ -322,7 +320,7 @@ const EventDialog = ({
             </div>
           )}
 
-          {eventQuery.data?.data.noi_dung}
+          {eventQuery.data?.data.content}
         </div>
         <DialogFooter>
           <Button type="button" onClick={onCancel}>
@@ -346,13 +344,13 @@ const NoticeDialog = ({
     <Dialog open={!!documentId} onOpenChange={onCancel}>
       <DialogContent className="w-[96%] h-[96%] sm:max-w-[90%] sm:h-[90%] flex flex-col">
         <DialogTitle className="hidden">
-          {noticeQuery.data?.data.tieu_de}
+          {noticeQuery.data?.data.title}
         </DialogTitle>
         <div className="text-3xl font-semibold">
-          {noticeQuery.data?.data.tieu_de}
+          {noticeQuery.data?.data.title}
         </div>
         <div className="basis-0 grow overflow-auto">
-          {noticeQuery.data?.data.noi_dung}
+          {noticeQuery.data?.data.content}
         </div>
         <DialogFooter>
           <Button type="button" onClick={onCancel}>
@@ -377,13 +375,13 @@ const VanBanDialog = ({
     <Dialog open={!!documentId} onOpenChange={onCancel}>
       <DialogContent className="w-[96%] h-[96%] sm:max-w-[90%] sm:h-[90%] flex flex-col">
         <DialogTitle className="hidden">
-          {vanBanQuery.data?.data.tieu_de}
+          {vanBanQuery.data?.data.title}
         </DialogTitle>
         <div className="text-3xl font-semibold">
-          {vanBanQuery.data?.data.tieu_de}
+          {vanBanQuery.data?.data.title}
         </div>
         <div className="basis-0 grow overflow-auto">
-          {vanBanQuery.data?.data.noi_dung}
+          {vanBanQuery.data?.data.content}
         </div>
         <DialogFooter>
           <Button type="button" onClick={onCancel}>
@@ -408,27 +406,25 @@ const StudentDialog = ({
     <Dialog open={!!documentId} onOpenChange={onCancel}>
       <DialogContent className="w-[96%] h-[96%] sm:max-w-[90%] sm:h-[90%] flex flex-col">
         <DialogTitle className="hidden">
-          {studentQuery.data?.data.ten}
+          {studentQuery.data?.data.name}
         </DialogTitle>
         <div className="text-3xl font-semibold">
-          {studentQuery.data?.data.ten}
+          {studentQuery.data?.data.name}
         </div>
         <div className="basis-0 grow overflow-auto">
-          {studentQuery.data?.data.hinh_anh && (
+          {studentQuery.data?.data.image && (
             <div className=" h-[450px] relative mb-4 bg-gray-400">
               <Image
-                src={normalizeImageUrl(
-                  studentQuery.data?.data.hinh_anh.url ?? ""
-                )}
-                alt={studentQuery.data?.data.ten || ""}
+                src={normalizeImageUrl(studentQuery.data?.data.image.url ?? "")}
+                alt={studentQuery.data?.data.name || ""}
                 fill
                 className="object-contain"
                 unoptimized
               />
             </div>
           )}
-          {studentQuery.data?.data.thanh_tich}
-          <HTMLParser content={studentQuery.data?.data.noi_dung ?? ""} />
+          {studentQuery.data?.data.achievement}
+          <HTMLParser content={studentQuery.data?.data.content ?? ""} />
         </div>
         <DialogFooter>
           <Button type="button" onClick={onCancel}>

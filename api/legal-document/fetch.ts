@@ -5,23 +5,22 @@ import {
   StrapiSingleResponse,
 } from "../strapi-common-type";
 
-export type VanBanDto = {
-  id: string;
+export type LegalDocumentDto = {
   documentId: string;
-  tieu_de: string;
-  noi_dung: string;
-  createdAt: string;
-  updatedAt: string;
-  publishedAt: string;
+  title: string;
+  description: string;
+  content: string;
 };
 
 export async function fetchAllVanBans(
   params?: Record<string, string | number>
 ) {
   try {
-    const res = await fetch(bindParams(`${API_FULL_URL}/api/van-bans`, params));
+    const res = await fetch(
+      bindParams(`${API_FULL_URL}/api/legal-documents`, params)
+    );
     const json = await res.json();
-    return json as StrapiCollectionResponse<VanBanDto>;
+    return json as StrapiCollectionResponse<LegalDocumentDto>;
   } catch (err) {
     console.error("fetchAllVanBans error:", err);
     return undefined;
@@ -31,10 +30,10 @@ export async function fetchAllVanBans(
 export async function fetchVanBanByDocumentId(documentId: string) {
   try {
     const res = await fetch(
-      bindParams(`${API_FULL_URL}/api/van-bans/${documentId}`, {})
+      bindParams(`${API_FULL_URL}/api/legal-documents/${documentId}`, {})
     );
     const json = await res.json();
-    return json as StrapiSingleResponse<VanBanDto>;
+    return json as StrapiSingleResponse<LegalDocumentDto>;
   } catch (err) {
     console.error("fetchVanBanByDocumentId error:", err);
     return undefined;
