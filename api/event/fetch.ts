@@ -1,4 +1,4 @@
-import { API_BASE_URL } from "@/lib/consts";
+import { API_FULL_URL } from "@/lib/consts";
 import {
   StrapiCollectionResponse,
   StrapiImage,
@@ -23,7 +23,7 @@ export type EventDto = {
 export async function fetchAllEvents(params?: Record<string, string | number>) {
   try {
     const response = await fetch(
-      bindParams(`${API_BASE_URL}/api/events`, {
+      bindParams(`${API_FULL_URL}/api/events`, {
         ...params,
         populate: "hinh_anh",
       })
@@ -39,7 +39,7 @@ export async function fetchAllEvents(params?: Record<string, string | number>) {
 export async function fetchEventByDocumentId(documentId: string) {
   try {
     const response = await fetch(
-      bindParams(`${API_BASE_URL}/api/events/${documentId}`, {
+      bindParams(`${API_FULL_URL}/api/events/${documentId}`, {
         populate: "hinh_anh",
       })
     );

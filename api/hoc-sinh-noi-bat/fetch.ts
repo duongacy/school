@@ -1,4 +1,4 @@
-import { API_BASE_URL } from "@/lib/consts";
+import { API_FULL_URL } from "@/lib/consts";
 import {
   StrapiCollectionResponse,
   StrapiImage,
@@ -22,7 +22,7 @@ export type StudentDto = {
 export async function getAllStudents(params?: Record<string, string | number>) {
   try {
     const response = await fetch(
-      bindParams(`${API_BASE_URL}/api/hoc-sinh-noi-bats`, {
+      bindParams(`${API_FULL_URL}/api/hoc-sinh-noi-bats`, {
         ...params,
         populate: "hinh_anh",
       })
@@ -37,7 +37,7 @@ export async function getAllStudents(params?: Record<string, string | number>) {
 export async function getStudentByDocumentId(documentId: string) {
   try {
     const response = await fetch(
-      bindParams(`${API_BASE_URL}/api/hoc-sinh-noi-bats/${documentId}`, {
+      bindParams(`${API_FULL_URL}/api/hoc-sinh-noi-bats/${documentId}`, {
         populate: "hinh_anh",
       })
     );

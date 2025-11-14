@@ -1,4 +1,4 @@
-import { API_BASE_URL } from "@/lib/consts";
+import { API_FULL_URL } from "@/lib/consts";
 import { bindParams } from "@/lib/utils";
 import {
   StrapiCollectionResponse,
@@ -19,7 +19,7 @@ export async function fetchAllVanBans(
   params?: Record<string, string | number>
 ) {
   try {
-    const res = await fetch(bindParams(`${API_BASE_URL}/api/van-bans`, params));
+    const res = await fetch(bindParams(`${API_FULL_URL}/api/van-bans`, params));
     const json = await res.json();
     return json as StrapiCollectionResponse<VanBanDto>;
   } catch (err) {
@@ -31,7 +31,7 @@ export async function fetchAllVanBans(
 export async function fetchVanBanByDocumentId(documentId: string) {
   try {
     const res = await fetch(
-      bindParams(`${API_BASE_URL}/api/van-bans/${documentId}`, {})
+      bindParams(`${API_FULL_URL}/api/van-bans/${documentId}`, {})
     );
     const json = await res.json();
     return json as StrapiSingleResponse<VanBanDto>;

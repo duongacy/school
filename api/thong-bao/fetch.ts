@@ -1,4 +1,4 @@
-import { API_BASE_URL } from "@/lib/consts";
+import { API_FULL_URL } from "@/lib/consts";
 import { bindParams } from "@/lib/utils";
 import { StrapiCollectionResponse, StrapiSingleResponse } from "../strapi-common-type";
 
@@ -17,7 +17,7 @@ export async function fetchAllNotices(
 ) {
   try {
     const response = await fetch(
-      bindParams(`${API_BASE_URL}/api/thong-baos`, { ...params })
+      bindParams(`${API_FULL_URL}/api/thong-baos`, { ...params })
     );
     const result = await response.json();
     return result as StrapiCollectionResponse<NoticeDto>;
@@ -30,7 +30,7 @@ export async function fetchAllNotices(
 export async function fetchNoticeByDocumentId(documentId: string) {
   try {
     const response = await fetch(
-      bindParams(`${API_BASE_URL}/api/thong-baos/${documentId}`, {})
+      bindParams(`${API_FULL_URL}/api/thong-baos/${documentId}`, {})
     );
     const result = await response.json();
     return result as StrapiSingleResponse<NoticeDto>;
