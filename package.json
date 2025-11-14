@@ -3,9 +3,14 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start --port 3002",
+    "dev": "dotenv -e .env.local -- sh -lc 'next dev --port $NEXT_PUBLIC_APP_PORT'",
+    "start": "dotenv -e .env.local -- sh -lc 'next start --port $NEXT_PUBLIC_APP_PORT'",
+    "build": "dotenv -e .env.local -- sh -lc 'next build'",
+
+    "start:prod": "dotenv -e .env.prod -- sh -lc 'next start --port $NEXT_PUBLIC_APP_PORT'",
+    "build:prod": "dotenv -e .env.prod -- sh -lc 'next build'",
+    
+    "info:port": "dotenv -e .env.local -- sh -lc 'echo NEXT_PUBLIC_APP_PORT=$NEXT_PUBLIC_APP_PORT'",
     "lint": "eslint",
     "test": "vitest run",
     "test:watch": "vitest",
@@ -67,6 +72,8 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "autoprefixer": "^10.4.21",
+    "cross-env": "^10.1.0",
+    "dotenv-cli": "^6.0.0",
     "eslint": "^9",
     "eslint-config-next": "16.0.1",
     "tailwindcss": "^4",
