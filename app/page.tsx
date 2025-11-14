@@ -15,6 +15,7 @@ import {
   DialogFooter,
   DialogTitle,
 } from "@/components/ui/dialog";
+import HTMLParser from "@/components/ui/html-parser";
 import { cn } from "@/lib/cn";
 import { normalizeImageUrl } from "@/lib/utils";
 import Image from "next/image";
@@ -427,6 +428,7 @@ const StudentDialog = ({
             </div>
           )}
           {studentQuery.data?.data.thanh_tich}
+          <HTMLParser content={studentQuery.data?.data.noi_dung ?? ""} />
         </div>
         <DialogFooter>
           <Button type="button" onClick={onCancel}>

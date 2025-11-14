@@ -6,10 +6,8 @@
     "dev": "dotenv -e .env.local -- sh -lc 'next dev --port $NEXT_PUBLIC_APP_PORT'",
     "start": "dotenv -e .env.local -- sh -lc 'next start --port $NEXT_PUBLIC_APP_PORT'",
     "build": "dotenv -e .env.local -- sh -lc 'next build'",
-
     "start:prod": "dotenv -e .env.prod -- sh -lc 'next start --port $NEXT_PUBLIC_APP_PORT'",
     "build:prod": "dotenv -e .env.prod -- sh -lc 'next build'",
-    
     "info:port": "dotenv -e .env.local -- sh -lc 'echo NEXT_PUBLIC_APP_PORT=$NEXT_PUBLIC_APP_PORT'",
     "lint": "eslint",
     "test": "vitest run",
@@ -50,6 +48,7 @@
     "cmdk": "^1.1.1",
     "date-fns": "^4.1.0",
     "embla-carousel-react": "^8.6.0",
+    "html-react-parser": "^5.2.8",
     "input-otp": "^1.4.2",
     "lucide-react": "^0.553.0",
     "next": "16.0.1",

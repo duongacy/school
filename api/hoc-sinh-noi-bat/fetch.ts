@@ -17,6 +17,7 @@ export type StudentDto = {
   updatedAt: string;
   publishedAt: string;
   hinh_anh?: StrapiImage;
+  noi_dung?: string;
 };
 
 export async function getAllStudents(params?: Record<string, string | number>) {
