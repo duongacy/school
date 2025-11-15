@@ -6,8 +6,11 @@ import {
   useAllStudents,
   useStudentByDocumentId,
 } from "@/api/outstanding-student/hooks";
-import { useAllNotices, useNoticeByDocumentId } from "@/api/announcement/hooks";
-import { useAllVanBans, useVanBanByDocumentId } from "@/api/legal-document/hooks";
+import { useAllAnnouncements, useAnnouncementByDocumentId } from "@/api/announcement/hooks";
+import {
+  useAllLegalDocuments,
+  useLegalDocumentByDocumentId,
+} from "@/api/legal-document/hooks";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -34,25 +37,25 @@ export default function HomePage() {
     "pagination[pageSize]": studentsPageSize,
   });
 
-  const [noticesPageSize, setNoticesPageSize] = useState(2);
-  const noticesQuery = useAllNotices({
+  const [announcementsPageSize, setAnnouncementsPageSize] = useState(2);
+  const announcementsQuery = useAllAnnouncements({
     "pagination[page]": 1,
-    "pagination[pageSize]": noticesPageSize,
+    "pagination[pageSize]": announcementsPageSize,
   });
 
-  const [vanBansPageSize, setVanBansPageSize] = useState(2);
-  const vanBansQuery = useAllVanBans({
+  const [legalDocumentsPageSize, setLegalDocumentsPageSize] = useState(2);
+  const legalDocumentsQuery = useAllLegalDocuments({
     "pagination[page]": 1,
-    "pagination[pageSize]": vanBansPageSize,
+    "pagination[pageSize]": legalDocumentsPageSize,
   });
 
   const [selectedEventId, setSelectedEventId] = useState<string | undefined>(
     undefined
   );
-  const [selectedNoticeId, setSelectedNoticeId] = useState<string | undefined>(
+  const [selectedAnnouncementId, setSelectedAnnouncementId] = useState<string | undefined>(
     undefined
   );
-  const [selectedVanBanId, setSelectedVanBanId] = useState<string | undefined>(
+  const [selectedLegalDocumentId, setSelectedLegalDocumentId] = useState<string | undefined>(
     undefined
   );
   const [selectedStudentId, setSelectedStudentId] = useState<
@@ -65,13 +68,13 @@ export default function HomePage() {
         documentId={selectedEventId}
         onCancel={() => setSelectedEventId(undefined)}
       />
-      <NoticeDialog
-        documentId={selectedNoticeId}
-        onCancel={() => setSelectedNoticeId(undefined)}
+      <AnnouncementDialog
+        documentId={selectedAnnouncementId}
+        onCancel={() => setSelectedAnnouncementId(undefined)}
       />
-      <VanBanDialog
-        documentId={selectedVanBanId}
-        onCancel={() => setSelectedVanBanId(undefined)}
+      <LegalDocumentDialog
+        documentId={selectedLegalDocumentId}
+        onCancel={() => setSelectedLegalDocumentId(undefined)}
       />
       <StudentDialog
         documentId={selectedStudentId}
@@ -126,7 +129,7 @@ export default function HomePage() {
           <HomeBlock title="Học sinh nổi bật">
             <div className="grid grid-cols-2 gap-3">
               {studentsQuery.data?.data.map((student: any) => (
-                <StudentCard
+                <OutstandingStudentCard
                   key={student.documentId}
                   student={student}
                   onSelect={() => setSelectedStudentId(student.documentId)}
@@ -149,22 +152,22 @@ export default function HomePage() {
         <aside className="space-y-3">
           <HomeBlock title="Thông báo nhanh">
             <ul className="space-y-3">
-              {noticesQuery.data?.data.map((announcement: any) => (
+              {announcementsQuery.data?.data.map((announcement) => (
                 <li
-                  key={announcement.id}
+                  key={announcement.documentId}
                   className="p-2 bg-gray-50 cursor-pointer"
-                  onClick={() => setSelectedNoticeId(announcement.documentId)}
+                  onClick={() => setSelectedAnnouncementId(announcement.documentId)}
                 >
-                  {announcement.tieu_de}
+                  {announcement.title}
                 </li>
               ))}
             </ul>
-            {noticesPageSize <
-              (noticesQuery.data?.meta.pagination.total || 0) && (
+            {announcementsPageSize <
+              (announcementsQuery.data?.meta.pagination.total || 0) && (
               <Button
                 className="mt-4 block w-fit mx-auto"
                 variant="outline"
-                onClick={() => setNoticesPageSize((prev) => prev + 1)}
+                onClick={() => setAnnouncementsPageSize((prev) => prev + 1)}
               >
                 Xem thêm
               </Button>
@@ -173,22 +176,22 @@ export default function HomePage() {
 
           <HomeBlock title="Văn bản mới">
             <ul className="space-y-3">
-              {vanBansQuery.data?.data.map((doc: any) => (
+              {legalDocumentsQuery.data?.data.map((doc) => (
                 <li
                   key={doc.documentId}
                   className="p-2 bg-gray-50 cursor-pointer"
-                  onClick={() => setSelectedVanBanId(doc.documentId)}
+                  onClick={() => setSelectedLegalDocumentId(doc.documentId)}
                 >
-                  {doc.tieu_de}
+                  {doc.title}
                 </li>
               ))}
             </ul>
-            {vanBansPageSize <
-              (vanBansQuery.data?.meta.pagination.total || 0) && (
+            {legalDocumentsPageSize <
+              (legalDocumentsQuery.data?.meta.pagination.total || 0) && (
               <Button
                 className="mt-4 block w-fit mx-auto"
                 variant="outline"
-                onClick={() => setVanBansPageSize((prev) => prev + 1)}
+                onClick={() => setLegalDocumentsPageSize((prev) => prev + 1)}
               >
                 Xem thêm
               </Button>
@@ -230,7 +233,7 @@ const EventItem = ({
   );
 };
 
-const StudentCard = ({
+const OutstandingStudentCard = ({
   className,
   student,
   onSelect,
@@ -308,19 +311,7 @@ const EventDialog = ({
           {eventQuery.data?.data.title}
         </div>
         <div className="basis-0 grow overflow-auto">
-          {eventQuery.data?.data.image && (
-            <div className=" h-[450px] relative mb-4 bg-gray-400">
-              <Image
-                src={normalizeImageUrl(eventQuery.data?.data.image.url ?? "")}
-                alt={eventQuery.data?.data.title || ""}
-                fill
-                className="object-contain"
-                unoptimized
-              />
-            </div>
-          )}
-
-          {eventQuery.data?.data.content}
+          <HTMLParser content={eventQuery.data?.data.content ?? ""} />
         </div>
         <DialogFooter>
           <Button type="button" onClick={onCancel}>
@@ -332,25 +323,25 @@ const EventDialog = ({
   );
 };
 
-const NoticeDialog = ({
+const AnnouncementDialog = ({
   documentId,
   onCancel,
 }: {
   documentId?: string;
   onCancel?: () => void;
 }) => {
-  const noticeQuery = useNoticeByDocumentId(documentId);
+  const announcementQuery = useAnnouncementByDocumentId(documentId);
   return (
     <Dialog open={!!documentId} onOpenChange={onCancel}>
       <DialogContent className="w-[96%] h-[96%] sm:max-w-[90%] sm:h-[90%] flex flex-col">
         <DialogTitle className="hidden">
-          {noticeQuery.data?.data.title}
+          {announcementQuery.data?.data.title}
         </DialogTitle>
         <div className="text-3xl font-semibold">
-          {noticeQuery.data?.data.title}
+          {announcementQuery.data?.data.title}
         </div>
         <div className="basis-0 grow overflow-auto">
-          {noticeQuery.data?.data.content}
+          <HTMLParser content={announcementQuery.data?.data.content ?? ""} />
         </div>
         <DialogFooter>
           <Button type="button" onClick={onCancel}>
@@ -362,26 +353,26 @@ const NoticeDialog = ({
   );
 };
 
-const VanBanDialog = ({
+const LegalDocumentDialog = ({
   documentId,
   onCancel,
 }: {
   documentId?: string;
   onCancel?: () => void;
 }) => {
-  const vanBanQuery = useVanBanByDocumentId(documentId);
+  const legalDocumentQuery = useLegalDocumentByDocumentId(documentId);
 
   return (
     <Dialog open={!!documentId} onOpenChange={onCancel}>
       <DialogContent className="w-[96%] h-[96%] sm:max-w-[90%] sm:h-[90%] flex flex-col">
         <DialogTitle className="hidden">
-          {vanBanQuery.data?.data.title}
+          {legalDocumentQuery.data?.data.title}
         </DialogTitle>
         <div className="text-3xl font-semibold">
-          {vanBanQuery.data?.data.title}
+          {legalDocumentQuery.data?.data.title}
         </div>
         <div className="basis-0 grow overflow-auto">
-          {vanBanQuery.data?.data.content}
+          <HTMLParser content={legalDocumentQuery.data?.data.content ?? ""} />
         </div>
         <DialogFooter>
           <Button type="button" onClick={onCancel}>

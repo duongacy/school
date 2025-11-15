@@ -1,21 +1,21 @@
 import { useQuery } from "@tanstack/react-query";
-import { fetchAllNotices, fetchNoticeByDocumentId } from "./fetch";
+import { fetchAllAnnouncements, fetchAnnouncementByDocumentId } from "./fetch";
 
-export const useAllNotices = (params?: Record<string, string | number>) => {
+export const useAllAnnouncements = (params?: Record<string, string | number>) => {
   return useQuery({
-    queryKey: ["notices", JSON.stringify(params)],
-    queryFn: () => fetchAllNotices(params),
+    queryKey: ["announcements", JSON.stringify(params)],
+    queryFn: () => fetchAllAnnouncements(params),
     placeholderData: (prev) => prev,
   });
 };
 
-export const useNoticeByDocumentId = (documentId?: string) => {
+export const useAnnouncementByDocumentId = (documentId?: string) => {
   return useQuery({
     enabled: !!documentId,
-    queryKey: ["notice", documentId],
+    queryKey: ["announcement", documentId],
     queryFn: () => {
       if (!documentId) return undefined;
-      return fetchNoticeByDocumentId(documentId);
+      return fetchAnnouncementByDocumentId(documentId);
     },
     placeholderData: (prev) => prev,
   });

@@ -1,7 +1,7 @@
 import { API_FULL_URL } from "./consts";
 
 export const normalizeImageUrl = (url: string) => {
-  return `${API_FULL_URL}${url}`;
+  return `${API_FULL_URL}${url ?? ""}`;
 };
 
 export function bindParams(

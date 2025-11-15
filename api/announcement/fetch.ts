@@ -12,7 +12,7 @@ export type AnnouncementDto = {
   content: string;
 };
 
-export async function fetchAllNotices(
+export async function fetchAllAnnouncements(
   params?: Record<string, string | number>
 ) {
   try {
@@ -22,12 +22,12 @@ export async function fetchAllNotices(
     const result = await response.json();
     return result as StrapiCollectionResponse<AnnouncementDto>;
   } catch (error) {
-    console.error("fetchAllNotices error:", error);
+    console.error("fetchAllAnnouncements error:", error);
     return undefined;
   }
 }
 
-export async function fetchNoticeByDocumentId(documentId: string) {
+export async function fetchAnnouncementByDocumentId(documentId: string) {
   try {
     const response = await fetch(
       bindParams(`${API_FULL_URL}/api/announcements/${documentId}`, {})
@@ -35,7 +35,7 @@ export async function fetchNoticeByDocumentId(documentId: string) {
     const result = await response.json();
     return result as StrapiSingleResponse<AnnouncementDto>;
   } catch (error) {
-    console.error("fetchNoticeByDocumentId error:", error);
+    console.error("fetchAnnouncementByDocumentId error:", error);
     return undefined;
   }
 }

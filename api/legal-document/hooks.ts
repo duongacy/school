@@ -1,21 +1,26 @@
 import { useQuery } from "@tanstack/react-query";
-import { fetchAllVanBans, fetchVanBanByDocumentId } from "./fetch";
+import {
+  fetchAllLegalDocuments,
+  fetchLegalDocumentByDocumentId,
+} from "./fetch";
 
-export const useAllVanBans = (params?: Record<string, string | number>) => {
+export const useAllLegalDocuments = (
+  params?: Record<string, string | number>
+) => {
   return useQuery({
-    queryKey: ["van-bans", JSON.stringify(params)],
-    queryFn: () => fetchAllVanBans(params),
+    queryKey: ["legal-documents", JSON.stringify(params)],
+    queryFn: () => fetchAllLegalDocuments(params),
     placeholderData: (prev) => prev,
   });
 };
 
-export const useVanBanByDocumentId = (documentId?: string) => {
+export const useLegalDocumentByDocumentId = (documentId?: string) => {
   return useQuery({
     enabled: !!documentId,
-    queryKey: ["van-ban", documentId],
+    queryKey: ["legal-document", documentId],
     queryFn: () => {
       if (!documentId) return undefined;
-      return fetchVanBanByDocumentId(documentId);
+      return fetchLegalDocumentByDocumentId(documentId);
     },
     placeholderData: (prev) => prev,
   });

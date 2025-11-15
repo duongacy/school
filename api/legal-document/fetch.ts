@@ -12,7 +12,7 @@ export type LegalDocumentDto = {
   content: string;
 };
 
-export async function fetchAllVanBans(
+export async function fetchAllLegalDocuments(
   params?: Record<string, string | number>
 ) {
   try {
@@ -22,12 +22,12 @@ export async function fetchAllVanBans(
     const json = await res.json();
     return json as StrapiCollectionResponse<LegalDocumentDto>;
   } catch (err) {
-    console.error("fetchAllVanBans error:", err);
+    console.error("fetchAllLegalDocuments error:", err);
     return undefined;
   }
 }
 
-export async function fetchVanBanByDocumentId(documentId: string) {
+export async function fetchLegalDocumentByDocumentId(documentId: string) {
   try {
     const res = await fetch(
       bindParams(`${API_FULL_URL}/api/legal-documents/${documentId}`, {})
@@ -35,7 +35,7 @@ export async function fetchVanBanByDocumentId(documentId: string) {
     const json = await res.json();
     return json as StrapiSingleResponse<LegalDocumentDto>;
   } catch (err) {
-    console.error("fetchVanBanByDocumentId error:", err);
+    console.error("fetchLegalDocumentByDocumentId error:", err);
     return undefined;
   }
 }
