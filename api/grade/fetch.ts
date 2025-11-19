@@ -14,6 +14,7 @@ export async function fetchAllGrades(params?: Record<string, string | number>) {
   try {
     const response = await fetch(
       bindParams(`${API_FULL_URL}/api/grades`, {
+        sort: "name:asc",
         ...params,
       })
     );

@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { fetchAllGrades, fetchGradeByDocumentId } from "./fetch";
 
-export const useAllBooks = (params?: Record<string, string | number>) => {
+export const useAllGrades = (params?: Record<string, string | number>) => {
   return useQuery({
     queryKey: ["grades", JSON.stringify(params)],
     queryFn: () => fetchAllGrades(params),

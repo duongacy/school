@@ -1,24 +1,83 @@
 "use client";
+import { useAllBookTypes } from "@/api/book-type/hooks";
 import { useAllBooks } from "@/api/book/hooks";
+import { useAllGrades } from "@/api/grade/hooks";
+import { useAllSubjects } from "@/api/subject/hooks";
+import { useAllWriters } from "@/api/writer/hooks";
 import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/cn";
-import { normalizeImageUrl } from "@/lib/utils";
+import { debounce, normalizeImageUrl } from "@/lib/utils";
 import Image from "next/image";
-import React, { useId } from "react";
+import React, { useEffect, useId } from "react";
 
 export default function LibraryPage() {
-  const allBooksQuery = useAllBooks();
-  const [selectedSubjects, setSelectedSubjects] = React.useState<string[]>([]);
-  const [selectedGrades, setSelectedGrades] = React.useState<string[]>([]);
-  const [selectedWriters, setSelectedWriters] = React.useState<string[]>([]);
-  const bookNameFilterRef = React.useRef<HTMLInputElement>(null);
+  const [pageSize, setPageSize] = React.useState(1);
+  const allWritersQuery = useAllWriters();
+  const allSubjectsQuery = useAllSubjects();
+  const allGradesQuery = useAllGrades();
+  const allBookTypesQuery = useAllBookTypes();
 
-  const handleSearch = () => {
-    // const bookName = bookNameFilterRef.current?.value || "";
-  };
+  const [bookNameFilter, setBookNameFilter] = React.useState("");
+  const [selectedSubject, setSelectedSubject] = React.useState<
+    string | undefined
+  >(undefined);
+  const [selectedGrade, setSelectedGrade] = React.useState<string | undefined>(
+    undefined
+  );
+  const [selectedWriters, setSelectedWriters] = React.useState<string[]>([]);
+  const [selectedBookTypes, setSelectedBookTypes] = React.useState<string[]>(
+    []
+  );
+
+  useEffect(() => {
+    setSelectedBookTypes(
+      allBookTypesQuery.data?.data.map((bt) => bt.documentId) || []
+    );
+  }, [allBookTypesQuery.data?.data]);
+
+  useEffect(() => {
+    setSelectedWriters(
+      allWritersQuery.data?.data.map((writer) => writer.documentId) || []
+    );
+  }, [allWritersQuery.data?.data]);
+
+  const allBooksQuery = useAllBooks({
+    ...(!!selectedGrade
+      ? { "filters[grade][documentId][$eq]": selectedGrade }
+      : {}),
+    ...(!!selectedSubject
+      ? { "filters[subject][documentId][$eq]": selectedSubject }
+      : {}),
+    ...(selectedBookTypes.length > 0
+      ? Object.fromEntries(
+          selectedBookTypes.map((documentId, index) => [
+            `filters[book_types][documentId][$in][${index}]`,
+            documentId,
+          ])
+        )
+      : { "filters[book_types][documentId][$in]": "" }),
+    ...(selectedWriters.length > 0
+      ? Object.fromEntries(
+          selectedWriters.map((documentId, index) => [
+            `filters[writers][documentId][$in][${index}]`,
+            documentId,
+          ])
+        )
+      : { "filters[writers][documentId][$in]": "" }),
+    "filters[name][$contains]": bookNameFilter,
+  });
+
+  const latestBooksQuery = useAllBooks({
+    sort: "createdAt:desc",
+    "pagination[page]": 1,
+    "pagination[pageSize]": pageSize,
+  });
+
+  const handleSearch = debounce((e) => {
+    setBookNameFilter(e.target.value);
+  }, 500);
+
   return (
     <div className="space-y-8 container mx-auto my-8">
       <section className="border p-6 bg-gray-100">
@@ -29,10 +88,117 @@ export default function LibraryPage() {
         </p>
       </section>
 
+      <div className="grid grid-cols-4 gap-6">
+        <div className=" bg-gray-100/50 p-4 flex flex-col gap-6">
+          <Input
+            className="rounded-none min-w-0"
+            placeholder="Tìm theo tên sách"
+            onChange={handleSearch}
+            defaultValue={bookNameFilter}
+          />
+          <aside className="space-y-4">
+            <div className="border p-4 bg-white">
+              <RadioGroup
+                listOptionsClassName="grid-cols-4 grid"
+                label="Lớp"
+                options={
+                  allGradesQuery.data?.data?.map((grade) => ({
+                    label: grade.name,
+                    value: grade.documentId,
+                  })) || []
+                }
+                value={selectedGrade}
+                onChange={setSelectedGrade}
+              />
+            </div>
+            <div className="border p-4 bg-white">
+              <RadioGroup
+                label="Môn học"
+                options={
+                  allSubjectsQuery.data?.data?.map((subject) => ({
+                    label: subject.name,
+                    value: subject.documentId,
+                  })) || []
+                }
+                value={selectedSubject}
+                onChange={setSelectedSubject}
+              />
+            </div>
+            <div className="border p-4 bg-white">
+              <CheckboxGroup
+                label="Tác giả"
+                options={
+                  allWritersQuery.data?.data?.map((writer) => ({
+                    label: writer.name,
+                    value: writer.documentId,
+                  })) || []
+                }
+                checked={selectedWriters}
+                onChange={setSelectedWriters}
+                inderterminate
+              />
+              {selectedWriters.length === 0 && (
+                <p className="mt-2 italic text-red-500">
+                  Vui lòng chọn ít nhất một tác giả để lọc
+                </p>
+              )}
+            </div>
+            <div className="border p-4 bg-white">
+              <CheckboxGroup
+                label="Loại sách"
+                options={
+                  allBookTypesQuery.data?.data?.map((bookType) => ({
+                    label: bookType.name,
+                    value: bookType.documentId,
+                  })) || []
+                }
+                checked={selectedBookTypes}
+                onChange={setSelectedBookTypes}
+                inderterminate
+              />
+              {selectedBookTypes.length === 0 && (
+                <p className="mt-2 italic text-red-500">
+                  Vui lòng chọn ít nhất một loại sách để lọc
+                </p>
+              )}
+            </div>
+          </aside>
+        </div>
+        <section className="space-y-6 col-span-3 border p-4 bg-white">
+          <h2 className="text-2xl font-semibold">Kết quả tìm kiếm</h2>
+          <div className="mt-3 grid grid-cols-3 gap-3 items-stretch">
+            {allBooksQuery.data?.data?.length === 0 && (
+              <div className="text-center text-muted-foreground col-span-3">
+                Không tìm thấy tài liệu phù hợp.
+              </div>
+            )}
+            {allBooksQuery.data?.data?.map((book) => (
+              <div className="p-3 border" key={book.documentId}>
+                <div className="bg-gray-200 mb-2 relative aspect-3/4">
+                  <Image
+                    unoptimized
+                    src={normalizeImageUrl(book.image.url)}
+                    alt={book.image.alternativeText || ""}
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+                <div className=" font-semibold">{book.name}</div>
+                <a
+                  href={normalizeImageUrl(book.file[0].url)}
+                  download={book.file[0].name}
+                >
+                  Xem
+                </a>
+              </div>
+            ))}
+          </div>
+        </section>
+      </div>
       <div className="border p-4 bg-white">
-        <h2 className="text-2xl font-semibold">Tài nguyên mới nhất</h2>
+        <h2 className="text-2xl font-semibold">Tài liệu mới nhất</h2>
         <div className="mt-3 grid grid-cols-3 gap-3">
-          {allBooksQuery.data?.data.map((book) => (
+          {latestBooksQuery.data?.data?.map((book) => (
             <div className="p-3 border" key={book.documentId}>
               <div className="bg-gray-200 mb-2 relative aspect-3/4">
                 <Image
@@ -56,105 +222,15 @@ export default function LibraryPage() {
             </div>
           ))}
         </div>
-        <Button variant="outline" className="ml-auto flex mt-4">
-          Xem thêm
-        </Button>
-      </div>
-
-      <div className="grid grid-cols-4 gap-6">
-        <div className=" bg-gray-100/50 p-4">
-          <div className="flex gap-2">
-            <Input
-              className="rounded-none min-w-0"
-              placeholder="Tìm theo tên sách"
-              defaultValue=""
-              ref={(el) => {
-                bookNameFilterRef.current = el;
-              }}
-            />
-            <Button className="rounded-none" onClick={handleSearch}>
-              Tìm
-            </Button>
-          </div>
-          <aside className="space-y-4 mt-2">
-            <CheckboxGroup
-              className="border p-4 bg-white"
-              listOptionsClassName="grid-cols-4 grid"
-              label="Lớp"
-              options={[
-                { label: "1", value: "1" },
-                { label: "2", value: "2" },
-                { label: "3", value: "3" },
-                { label: "4", value: "4" },
-                { label: "5", value: "5" },
-                { label: "6", value: "6" },
-                { label: "7", value: "7" },
-                { label: "8", value: "8" },
-                { label: "9", value: "9" },
-                { label: "10", value: "10" },
-                { label: "11", value: "11" },
-                { label: "12", value: "12" },
-              ]}
-              checked={selectedGrades}
-              onChange={setSelectedGrades}
-              inderterminate
-            />
-
-            <CheckboxGroup
-              listOptionsClassName="grid-cols-2"
-              className="border p-4 bg-white"
-              label="Môn học"
-              options={[
-                { label: "Toán", value: "toan" },
-                { label: "Lý", value: "ly" },
-                { label: "Hóa", value: "hoa" },
-                { label: "Văn", value: "van" },
-                { label: "Sinh học", value: "sinh-hoc" },
-                { label: "Tiếng Anh", value: "tieng-anh" },
-              ]}
-              checked={selectedSubjects}
-              onChange={setSelectedSubjects}
-              inderterminate
-            />
-            <CheckboxGroup
-              className="border p-4 bg-white"
-              label="Môn học"
-              options={[
-                { label: "Nguyễn Thiện Thuật", value: "nguyen-thien-thuat" },
-                { label: "Nam Cao", value: "nam-cao" },
-              ]}
-              checked={selectedWriters}
-              onChange={setSelectedWriters}
-              inderterminate
-            />
-          </aside>
-        </div>
-        <section className="space-y-6 col-span-3 border p-4 bg-white">
-          <h2 className="text-2xl font-semibold">Kết quả tìm kiếm</h2>
-          <div className="mt-3 grid grid-cols-3 gap-3 items-stretch">
-            <div className="p-3 border">
-              <div className="h-28 bg-gray-200  mb-2" />
-              <div className="font-medium">Bài giảng: Đại số - Lớp 10</div>
-              <div className="text-sm text-muted-foreground">
-                PDF • Giáo viên: Nguyễn Văn A
-              </div>
-            </div>
-            <div className="p-3 border">
-              <div className="h-28 bg-gray-200  mb-2" />
-              <div className="font-medium">Ngữ văn: Tổng hợp tác phẩm</div>
-              <div className="text-sm text-muted-foreground">
-                PDF • Nhiều tài liệu
-              </div>
-            </div>
-            <div className="p-3 border">
-              <div className="h-28 bg-gray-200  mb-2" />
-              <div className="font-medium">Đề thi giữa kỳ 2025</div>
-              <div className="text-sm text-muted-foreground">
-                PDF • Có đáp án
-              </div>
-            </div>
-          </div>
-        </section>
+        {(latestBooksQuery.data?.meta.pagination.total || 0) > pageSize && (
+          <Button
+            variant="outline"
+            className="ml-auto flex mt-4"
+            onClick={() => setPageSize((prev) => prev + 5)}
+          >
+            Xem thêm
+          </Button>
+        )}
       </div>
       <div className="p-4 border">
         <h3 className="text-2xl font-semibold">Tải lên / Đề xuất tài liệu</h3>
@@ -194,26 +270,17 @@ const CheckboxGroup = ({
   const id = useId();
   return (
     <div className={cn(`${className}`)}>
-      <div className="font-medium">{label}</div>
-      {inderterminate && (
-        <div className="flex items-center gap-2 mt-3 p-2 bg-gray-100">
-          <Checkbox
-            id={id + "-all"}
-            onCheckedChange={(value) => {
-              onChange?.(value ? options.map((o) => o.value) : []);
-            }}
-            checked={checked?.length === options.length}
-          />
-          <Label htmlFor={id + "-all"}>{inderterminateLabel || "Tất cả"}</Label>
-        </div>
-      )}
+      <div className="font-medium text-lg">{label}</div>
       <div className={cn("mt-2 p-2 grid gap-3", listOptionsClassName)}>
         {options.map((option) => (
-          <div key={option.value} className="flex items-center gap-2">
-            <Checkbox
+          <label key={option.value} className="flex items-center gap-2">
+            <input
+              className="size-5 accent-blue-700"
+              type="checkbox"
               id={id + "-" + option.value}
               checked={checked?.includes(option.value)}
-              onCheckedChange={(value) => {
+              onChange={(e) => {
+                const value = e.target.value;
                 onChange?.(
                   value
                     ? [...checked, option.value]
@@ -221,10 +288,70 @@ const CheckboxGroup = ({
                 );
               }}
             />
-            <Label htmlFor={id + "-" + option.value}>{option.label}</Label>
-          </div>
+            <p>{option.label}</p>
+          </label>
         ))}
       </div>
+      {inderterminate && (
+        <label className="flex items-center gap-2 mt-3 p-2 bg-gray-100">
+          <input
+            className="size-5 accent-blue-700"
+            type="checkbox"
+            id={id + "-all"}
+            onChange={(e) => {
+              onChange?.(e.target.checked ? options.map((o) => o.value) : []);
+            }}
+            checked={checked?.length === options.length && options.length > 0}
+          />
+          <p className=" flex-1">{inderterminateLabel || "Tất cả"}</p>
+        </label>
+      )}
+    </div>
+  );
+};
+
+const RadioGroup = ({
+  label,
+  options = [],
+  value,
+  onChange,
+  className,
+  listOptionsClassName,
+}: {
+  label: string;
+  options: { label: string; value: string }[];
+  value?: string;
+  onChange?: (value?: string) => void;
+  className?: string;
+  listOptionsClassName?: string;
+}) => {
+  return (
+    <div className={cn(`${className}`)}>
+      <div className="font-medium text-lg">{label}</div>
+      <div className={cn("mt-2 grid gap-3", listOptionsClassName)}>
+        {options.map((option) => (
+          <label
+            key={option.value}
+            className="flex items-center gap-2 cursor-pointer"
+          >
+            <input
+              type="radio"
+              value={option.value}
+              checked={value === option.value}
+              onChange={(e) => onChange?.(e.target.value)}
+              className="size-5 accent-blue-700"
+            />
+            <span className="select-none">{option.label}</span>
+          </label>
+        ))}
+      </div>
+      <Button
+        className="mt-2 w-full"
+        variant={"outline"}
+        onClick={() => onChange?.(undefined)}
+      >
+        Bỏ chọn
+      </Button>
     </div>
   );
 };
