@@ -6,7 +6,10 @@ import {
   useAllStudents,
   useStudentByDocumentId,
 } from "@/api/outstanding-student/hooks";
-import { useAllAnnouncements, useAnnouncementByDocumentId } from "@/api/announcement/hooks";
+import {
+  useAllAnnouncements,
+  useAnnouncementByDocumentId,
+} from "@/api/announcement/hooks";
 import {
   useAllLegalDocuments,
   useLegalDocumentByDocumentId,
@@ -52,12 +55,12 @@ export default function HomePage() {
   const [selectedEventId, setSelectedEventId] = useState<string | undefined>(
     undefined
   );
-  const [selectedAnnouncementId, setSelectedAnnouncementId] = useState<string | undefined>(
-    undefined
-  );
-  const [selectedLegalDocumentId, setSelectedLegalDocumentId] = useState<string | undefined>(
-    undefined
-  );
+  const [selectedAnnouncementId, setSelectedAnnouncementId] = useState<
+    string | undefined
+  >(undefined);
+  const [selectedLegalDocumentId, setSelectedLegalDocumentId] = useState<
+    string | undefined
+  >(undefined);
   const [selectedStudentId, setSelectedStudentId] = useState<
     string | undefined
   >(undefined);
@@ -83,7 +86,7 @@ export default function HomePage() {
 
       <section className="bg-gray-100 border p-4">
         <div className="container mx-auto">
-          <div className="h-80 relative">
+          <div className="relative aspect-53/35 max-h-96 mx-auto">
             <Image
               src="/home/h1.png"
               alt="Description"
@@ -99,7 +102,7 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-      <div className="grid grid-cols-[2fr_1fr] gap-6 container mx-auto my-8">
+      <div className="grid lg:grid-cols-[2fr_1fr] gap-6 mx-auto px-2 my-8 container">
         <div className="space-y-6">
           <HomeBlock title="Tin tức & Sự kiện">
             <div className="space-y-3">
@@ -156,7 +159,9 @@ export default function HomePage() {
                 <li
                   key={announcement.documentId}
                   className="p-2 bg-gray-50 cursor-pointer"
-                  onClick={() => setSelectedAnnouncementId(announcement.documentId)}
+                  onClick={() =>
+                    setSelectedAnnouncementId(announcement.documentId)
+                  }
                 >
                   {announcement.title}
                 </li>
@@ -244,8 +249,8 @@ const OutstandingStudentCard = ({
 }) => {
   return (
     <div className={cn("p-3 border bg-gray-50", className)} onClick={onSelect}>
-      <div className=" grid grid-cols-[auto_1fr] gap-3">
-        <div className="mb-2 rounded-full w-16 h-16 bg-gray-200 overflow-hidden relative">
+      <div className="grid gap-3">
+        <div className="mb-2  bg-blue-100 py-2 overflow-hidden aspect-square relative">
           <Image
             src={
               student.image
@@ -260,18 +265,12 @@ const OutstandingStudentCard = ({
         </div>
         <div>
           <div className="font-medium">{student.name}</div>
-          <div className="text-sm text-slate-500 col-span-2">
-            Lớp: {student.class}
-          </div>
-          <div className="text-sm text-slate-500 col-span-2">
-            Trường: {student.school}
-          </div>
+          <div className="text-sm text-slate-500">Lớp: {student.class}</div>
+          <div className="text-sm text-slate-500">Trường: {student.school}</div>
         </div>
       </div>
 
-      <div className="text-sm text-center mt-1 font-bold col-span-2">
-        {student.achievement}
-      </div>
+      <div className="text-sm mt-1 font-bold">{student.achievement}</div>
     </div>
   );
 };

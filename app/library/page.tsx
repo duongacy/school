@@ -79,8 +79,8 @@ export default function LibraryPage() {
   }, 500);
 
   return (
-    <div className="space-y-8 container mx-auto my-8">
-      <section className="border p-6 bg-gray-100">
+    <div className="space-y-8 container mx-auto my-8 px-2">
+      <section className="border p-4 bg-gray-100">
         <h1 className="text-4xl font-bold">Thư viện</h1>
         <p className="text-base text-muted-foreground mt-2">
           Kho tài nguyên: sách, bài giảng, đề thi và tài liệu tham khảo cho học
@@ -88,7 +88,7 @@ export default function LibraryPage() {
         </p>
       </section>
 
-      <div className="grid grid-cols-4 gap-6">
+      <div className="grid gap-6 lg:grid-cols-4">
         <div className=" bg-gray-100/50 p-4 flex flex-col gap-6">
           <Input
             className="rounded-none min-w-0"
@@ -164,9 +164,9 @@ export default function LibraryPage() {
             </div>
           </aside>
         </div>
-        <section className="space-y-6 col-span-3 border p-4 bg-white">
+        <section className="space-y-6  lg:col-span-3 border p-4 bg-white">
           <h2 className="text-2xl font-semibold">Kết quả tìm kiếm</h2>
-          <div className="mt-3 grid grid-cols-3 gap-3 items-stretch">
+          <div className="mt-3 grid lg:grid-cols-3 gap-3 items-stretch">
             {allBooksQuery.data?.data?.length === 0 && (
               <div className="text-center text-muted-foreground col-span-3">
                 Không tìm thấy tài liệu phù hợp.
@@ -197,7 +197,7 @@ export default function LibraryPage() {
       </div>
       <div className="border p-4 bg-white">
         <h2 className="text-2xl font-semibold">Tài liệu mới nhất</h2>
-        <div className="mt-3 grid grid-cols-3 gap-3">
+        <div className="mt-3 grid lg:grid-cols-3 gap-3">
           {latestBooksQuery.data?.data?.map((book) => (
             <div className="p-3 border" key={book.documentId}>
               <div className="bg-gray-200 mb-2 relative aspect-3/4">

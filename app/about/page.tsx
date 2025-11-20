@@ -3,8 +3,8 @@ import Image from "next/image";
 export default function AboutPage() {
   return (
     <div className=" text-gray-700">
-      <section className="bg-gray-100 border p-4">
-        <div className="container mx-auto">
+      <section className="bg-gray-100 border">
+        <div className="container mx-auto px-2 py-4">
           <div className="h-80 bg-gray-800"></div>
           <div className="mt-4 flex justify-center gap-2">
             <div className="size-3 bg-gray-600 rounded-full"></div>
@@ -14,10 +14,10 @@ export default function AboutPage() {
           </div>
         </div>
       </section>
-      <section className="my-8 container mx-auto space-y-8">
+      <section className="my-8 container mx-auto space-y-8 px-2">
         <div className="border p-4">
           <h2 className="text-3xl font-semibold">Tầm nhìn và sứ mệnh</h2>
-          <div className="grid grid-cols-2 gap-8">
+          <div className="grid lg:grid-cols-2 gap-8">
             <p className=" mt-4 bg-blue-100/50 p-4">
               Xây dựng nền giáo dục hiện đại, chất lượng cao, đạt trình độ tiên
               tiến khu vực vào 2030, tiến tới thế giới 2045. Giáo dục là động
@@ -39,7 +39,7 @@ export default function AboutPage() {
             triển toàn diện con người (phẩm chất và năng lực) để phục vụ sự
             nghiệp phát triển bền vững của đất nước và hội nhập quốc tế
           </div>
-          <div className="grid grid-cols-2 gap-8 mt-4 text-center">
+          <div className="grid lg:grid-cols-2 gap-8 mt-4 text-center">
             <p className=" bg-blue-100/50 p-4">
               <b>Nhân văn/Tình yêu thương</b> <br />
               Đặt con người làm trung tâm, giáo dục phẩm chất, lòng thiện lương,
@@ -236,10 +236,15 @@ export default function AboutPage() {
         </div>
 
         <div className="border p-4">
-          <h2 className="text-3xl font-semibold">Lãnh đạo hiện nay</h2>
+          <h2 className="text-3xl font-semibold">Lãnh đạo</h2>
           <div className="border mx-auto w-fit p-4 bg-blue-50 flex flex-col items-center gap-2 mt-4">
             <div className="w-26 h-32 shrink-0 relative">
-              <Image alt="" fill src="/images/about/nguyen_kim_son.png" style={{ objectFit: 'cover' }} />
+              <Image
+                alt=""
+                fill
+                src="/images/about/nguyen_kim_son.png"
+                style={{ objectFit: "cover" }}
+              />
             </div>
             <p className="mt-1 text-center">
               <b>Bộ trưởng Nguyễn Kim Sơn</b>
@@ -248,10 +253,15 @@ export default function AboutPage() {
               Bí thư Đảng ủy Bộ
             </p>
           </div>
-          <div className="grid grid-cols-[repeat(5,1fr)] w-fit mx-auto mt-4 gap-4">
-            <div className="text-xs p-4  flex flex-col items-center gap-2 mt-4">
-                <div className="w-20 h-24 shrink-0 relative">
-                <Image alt="" fill src="/images/about/pham_ngoc_thuong.png" style={{ objectFit: 'cover' }} />
+          <div className="grid lg:grid-cols-[repeat(5,1fr)] w-fit mx-auto mt-4 gap-4">
+            <div className="text-xs p-4 flex flex-col items-center gap-2 mt-4">
+              <div className="w-20 h-24 shrink-0 relative">
+                <Image
+                  alt=""
+                  fill
+                  src="/images/about/pham_ngoc_thuong.png"
+                  style={{ objectFit: "cover" }}
+                />
               </div>
               <p className="mt-1 text-center">
                 <b>Thứ trưởng Phạm Ngọc Thưởng</b>
@@ -261,9 +271,14 @@ export default function AboutPage() {
               </p>
             </div>
             <div className="text-xs p-4  flex flex-col items-center gap-2 mt-4">
-                <div className="w-20 h-24 shrink-0 relative">
-                  <Image alt="" fill src="/images/about/nguyen_van_phuc.png" style={{ objectFit: 'cover' }} />
-                </div>
+              <div className="w-20 h-24 shrink-0 relative">
+                <Image
+                  alt=""
+                  fill
+                  src="/images/about/nguyen_van_phuc.png"
+                  style={{ objectFit: "cover" }}
+                />
+              </div>
               <p className="mt-1 text-center">
                 <b>Thứ trưởng Nguyễn Văn Phúc</b>
                 <br />
@@ -272,7 +287,12 @@ export default function AboutPage() {
             </div>
             <div className="text-xs p-4  flex flex-col items-center gap-2 mt-4">
               <div className="w-20 h-24 shrink-0 relative">
-                <Image alt="" fill src="/images/about/le_quan.png" style={{ objectFit: 'cover' }} />
+                <Image
+                  alt=""
+                  fill
+                  src="/images/about/le_quan.png"
+                  style={{ objectFit: "cover" }}
+                />
               </div>
               <p className="mt-1 text-center">
                 <b>Thứ trưởng Lê Quân</b>
@@ -280,7 +300,12 @@ export default function AboutPage() {
             </div>
             <div className="text-xs p-4  flex flex-col items-center gap-2 mt-4">
               <div className="w-20 h-24 shrink-0 relative">
-                <Image alt="" fill src="/images/about/nguyen_thi_kim_chi.png" style={{ objectFit: 'cover' }} />
+                <Image
+                  alt=""
+                  fill
+                  src="/images/about/nguyen_thi_kim_chi.png"
+                  style={{ objectFit: "cover" }}
+                />
               </div>
               <p className="mt-1 text-center">
                 <b> Thứ trưởng Nguyễn Thị Kim Chi</b>
@@ -288,7 +313,12 @@ export default function AboutPage() {
             </div>
             <div className="text-xs p-4  flex flex-col items-center gap-2 mt-4">
               <div className="w-20 h-24 shrink-0 relative">
-                <Image alt="" fill src="/images/about/le_tan_dung.png" style={{ objectFit: 'cover' }} />
+                <Image
+                  alt=""
+                  fill
+                  src="/images/about/le_tan_dung.png"
+                  style={{ objectFit: "cover" }}
+                />
               </div>
               <p className="mt-1 text-center">
                 <b> Thứ trưởng Lê Tấn Dũng</b>

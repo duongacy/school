@@ -3,8 +3,8 @@
 export default function Footer() {
   return (
     <footer className="border-t  py-6 bg-gray-100">
-      <div className="container mx-auto space-y-6">
-        <div className=" grid grid-cols-4 gap-4">
+      <div className="container mx-auto space-y-6 px-2">
+        <div className="grid lg:grid-cols-4 gap-4">
           <div>
             <div className="font-semibold">BỘ GIÁO DỤC VÀ ĐÀO TẠO</div>
             <div className="text-sm text-gray-700 mt-2">

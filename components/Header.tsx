@@ -8,10 +8,10 @@ const NAV_ITEMS: { href: string; label: string }[] = [
   //   { href: "/", label: "Trang chủ" },
   { href: "/about", label: "Giới thiệu" },
   { href: "/library", label: "Thư viện" },
-  { href: "/community", label: "Cộng đồng" },
-  { href: "/search", label: "Tra cứu" },
-  { href: "/contact", label: "Liên hệ" },
-  { href: "/login", label: "Đăng nhập" },
+  // { href: "/community", label: "Cộng đồng" },
+  // { href: "/search", label: "Tra cứu" },
+  // { href: "/contact", label: "Liên hệ" },
+  // { href: "/login", label: "Đăng nhập" },
 ];
 
 export default function Header() {
@@ -43,7 +43,7 @@ export default function Header() {
   const normalizedPath = normalizePath(pathname);
   return (
     <header className="border-b bg-white py-3">
-      <div className="flex items-center container mx-auto justify-between">
+      <div className="flex items-center container mx-auto px-2 justify-between">
         <Link
           href="/"
           className="inline-flex items-center gap-3 h-10 bg-blue-600 w-32"
