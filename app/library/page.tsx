@@ -133,7 +133,7 @@ export default function LibraryPage() {
                     value: writer.documentId,
                   })) || []
                 }
-                checked={selectedWriters}
+                selectedValues={selectedWriters}
                 onChange={setSelectedWriters}
                 inderterminate
               />
@@ -152,7 +152,7 @@ export default function LibraryPage() {
                     value: bookType.documentId,
                   })) || []
                 }
-                checked={selectedBookTypes}
+                selectedValues={selectedBookTypes}
                 onChange={setSelectedBookTypes}
                 inderterminate
               />
@@ -251,7 +251,7 @@ export default function LibraryPage() {
 const CheckboxGroup = ({
   label,
   options = [],
-  checked = [],
+  selectedValues = [],
   onChange,
   inderterminate,
   className,
@@ -260,7 +260,7 @@ const CheckboxGroup = ({
 }: {
   label: string;
   options: { label: string; value: string }[];
-  checked?: string[];
+  selectedValues?: string[];
   onChange?: (values: string[]) => void;
   inderterminate?: boolean;
   className?: string;
@@ -277,14 +277,13 @@ const CheckboxGroup = ({
             <input
               className="size-5 accent-blue-700"
               type="checkbox"
-              id={id + "-" + option.value}
-              checked={checked?.includes(option.value)}
+              checked={selectedValues?.includes(option.value)}
+              value={option.value}
               onChange={(e) => {
-                const value = e.target.value;
                 onChange?.(
-                  value
-                    ? [...checked, option.value]
-                    : checked.filter((v) => v !== option.value)
+                  e.target.checked
+                    ? [...selectedValues, e.target.value]
+                    : selectedValues.filter((v) => v !== e.target.value)
                 );
               }}
             />
@@ -293,7 +292,7 @@ const CheckboxGroup = ({
         ))}
       </div>
       {inderterminate && (
-        <label className="flex items-center gap-2 mt-3 p-2 bg-gray-100">
+        <label className="flex items-center gap-2 mt-3 p-2 bg-gray-100 cursor-pointer">
           <input
             className="size-5 accent-blue-700"
             type="checkbox"
@@ -301,7 +300,9 @@ const CheckboxGroup = ({
             onChange={(e) => {
               onChange?.(e.target.checked ? options.map((o) => o.value) : []);
             }}
-            checked={checked?.length === options.length && options.length > 0}
+            checked={
+              selectedValues?.length === options.length && options.length > 0
+            }
           />
           <p className=" flex-1">{inderterminateLabel || "Tất cả"}</p>
         </label>
