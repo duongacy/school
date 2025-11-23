@@ -27,7 +27,7 @@ import { normalizeImageUrl } from "@/lib/utils";
 import Image from "next/image";
 import React, { useState } from "react";
 
-export default function HomePage() {
+export default function TenantClient({ tenant }: { tenant: string }) {
   const [eventsPageSize, setEventsPageSize] = useState(2);
   const eventsQuery = useAllEvents({
     "pagination[page]": 1,
@@ -104,7 +104,7 @@ export default function HomePage() {
       </section>
       <div className="grid lg:grid-cols-[2fr_1fr] gap-6 mx-auto px-2 my-8 container">
         <div className="space-y-6">
-          <HomeBlock title="Tin tức & Sự kiện">
+          <HomeBlock title={`Tin tức & Sự kiện`}>
             <div className="space-y-3">
               {eventsQuery.data?.data.map((event: EventDto) => {
                 return (
@@ -128,7 +128,6 @@ export default function HomePage() {
             )}
           </HomeBlock>
 
-          {/* Featured / Highlights */}
           <HomeBlock title="Học sinh nổi bật">
             <div className="grid grid-cols-2 gap-3">
               {studentsQuery.data?.data.map((student: any) => (
@@ -152,7 +151,7 @@ export default function HomePage() {
           </HomeBlock>
         </div>
 
-        <aside className="space-y-3">
+        <aside className="space-y-6">
           <HomeBlock title="Thông báo nhanh">
             <ul className="space-y-3">
               {announcementsQuery.data?.data.map((announcement) => (

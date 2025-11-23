@@ -5,14 +5,19 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 const NAV_ITEMS: { href: string; label: string }[] = [
-  //   { href: "/", label: "Trang chủ" },
-  { href: "/about", label: "Giới thiệu" },
+  { href: "/", label: "Trang chủ" },
+  { href: "/news", label: "Tin tức" },
   { href: "/library", label: "Thư viện" },
-  // { href: "/community", label: "Cộng đồng" },
-  // { href: "/search", label: "Tra cứu" },
-  // { href: "/contact", label: "Liên hệ" },
-  // { href: "/login", label: "Đăng nhập" },
+  { href: "/fund", label: "Quỹ" },
 ];
+
+const PUBLIC_TOP_LEVEL = new Set([
+  "",
+  "news",
+  "library",
+  "fund",
+  "shadcn-demo",
+]);
 
 export default function Header() {
   const pathname = usePathname() || "/";
@@ -25,6 +30,10 @@ export default function Header() {
   }
 
   function isActive(navHref: string, currentPath: string) {
+    if (navHref === `/${tenant}`) {
+      if (currentPath !== navHref) return false;
+    }
+
     const a = normalizePath(navHref);
     const b = normalizePath(currentPath);
     if (a === "/") return b === "/";
@@ -41,34 +50,70 @@ export default function Header() {
   }
 
   const normalizedPath = normalizePath(pathname);
+  const segments = normalizedPath.split("/").filter(Boolean);
+  const first = segments[0];
+  const isTenantPath =
+    first &&
+    !PUBLIC_TOP_LEVEL.has(first) &&
+    first !== "_next" &&
+    first !== "api";
+
+  const tenant = isTenantPath ? first : null;
   return (
     <header className="border-b bg-white py-3">
       <div className="flex items-center container mx-auto px-2 justify-between">
-        <Link
-          href="/"
-          className="inline-flex items-center gap-3 h-10 bg-blue-600 w-32"
-        />
+        <Link href="/" className="inline-flex items-center gap-3 h-10">
+          <span className="inline-block bg-blue-600 text-white px-3 py-1 rounded">
+            Trường
+          </span>
+        </Link>
         <nav className="flex" aria-label="Main navigation">
-          {NAV_ITEMS.map((item) => {
-            const exact = normalizePath(item.href) === normalizedPath;
-            const active = isActive(item.href, normalizedPath);
-            return (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={cn(
-                  "px-3 py-1 rounded hover:bg-gray-100",
-                  exact
-                    ? "text-blue-600 font-semibold"
-                    : active
-                    ? "text-blue-600"
-                    : "text-gray-700"
-                )}
-              >
-                {item.label}
-              </Link>
-            );
-          })}
+          {tenant
+            ? [
+                { href: `/${tenant}`, label: "Trang chủ" },
+                { href: `/${tenant}/news`, label: "Tin tức" },
+                { href: `/${tenant}/library`, label: "Thư viện" },
+                { href: `/${tenant}/about`, label: "Giới thiệu" },
+              ].map((item) => {
+                const exact = normalizePath(item.href) === normalizedPath;
+                const active = isActive(item.href, normalizedPath);
+                return (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    className={cn(
+                      "px-3 py-1 rounded hover:bg-gray-100",
+                      exact
+                        ? "text-blue-600 font-semibold"
+                        : active
+                        ? "text-blue-600"
+                        : "text-gray-700"
+                    )}
+                  >
+                    {item.label}
+                  </Link>
+                );
+              })
+            : NAV_ITEMS.map((item) => {
+                const exact = normalizePath(item.href) === normalizedPath;
+                const active = isActive(item.href, normalizedPath);
+                return (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    className={cn(
+                      "px-3 py-1 rounded hover:bg-gray-100",
+                      exact
+                        ? "text-blue-600 font-semibold"
+                        : active
+                        ? "text-blue-600"
+                        : "text-gray-700"
+                    )}
+                  >
+                    {item.label}
+                  </Link>
+                );
+              })}
         </nav>
       </div>
     </header>
